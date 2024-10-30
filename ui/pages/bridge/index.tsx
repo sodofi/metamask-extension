@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, useHistory } from 'react-router-dom';
 import { I18nContext } from '../../contexts/i18n';
@@ -35,6 +35,7 @@ import { useBridgeExchangeRates } from '../../hooks/bridge/useBridgeExchangeRate
 import { useQuoteFetchEvents } from '../../hooks/bridge/useQuoteFetchEvents';
 import PrepareBridgePage from './prepare/prepare-bridge-page';
 import { BridgeCTAButton } from './prepare/bridge-cta-button';
+import { BridgeTransactionSettingsModal } from './prepare/bridge-transaction-settings-modal';
 
 const CrossChainSwap = () => {
   const t = useContext(I18nContext);
@@ -90,6 +91,8 @@ const CrossChainSwap = () => {
     await resetControllerAndInputStates();
   };
 
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+
   return (
     <div className="bridge">
       <div className="bridge__container">
@@ -108,6 +111,7 @@ const CrossChainSwap = () => {
               iconName={IconName.Setting}
               size={ButtonIconSize.Sm}
               ariaLabel={t('settings')}
+              onClick={() => setIsSettingsModalOpen(true)}
             />
           }
         >
@@ -120,7 +124,15 @@ const CrossChainSwap = () => {
               flag={isBridgeEnabled}
               path={CROSS_CHAIN_SWAP_ROUTE + PREPARE_SWAP_ROUTE}
               render={() => {
-                return <PrepareBridgePage />;
+                return (
+                  <>
+                    <BridgeTransactionSettingsModal
+                      isOpen={isSettingsModalOpen}
+                      onClose={() => setIsSettingsModalOpen(false)}
+                    />
+                    <PrepareBridgePage />
+                  </>
+                );
               }}
             />
           </Switch>

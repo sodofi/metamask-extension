@@ -446,6 +446,8 @@ export const getBridgeQuotes = createSelector(
   }),
 );
 
+export const getSlippage = (state: BridgeAppState) => state.bridge.slippage;
+
 export const getIsBridgeTx = createDeepEqualSelector(
   getFromChain,
   getToChain,
