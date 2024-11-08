@@ -174,7 +174,7 @@ export const formatEtaInMinutes = (estimatedProcessingTimeInSeconds: number) =>
 export const formatTokenAmount = (
   amount: BigNumber,
   symbol: string,
-  precision: number = 2,
+  precision: number = DEFAULT_PRECISION,
 ) => `${amount.toFixed(precision)} ${symbol}`;
 
 export const formatCurrencyAmount = (

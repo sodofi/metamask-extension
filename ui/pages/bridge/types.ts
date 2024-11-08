@@ -1,4 +1,6 @@
 import { BigNumber } from 'bignumber.js';
+import { SwapsTokenObject } from '../../../shared/constants/swaps';
+import { SwapsEthToken } from '../../selectors';
 
 export type L1GasFees = {
   l1GasFeesInHexWei?: string; // l1 fees for approval and trade in hex wei, appended by controller
@@ -21,6 +23,12 @@ export enum SortOrder {
   COST_ASC = 'cost_ascending',
   ETA_ASC = 'time_descending',
 }
+
+export type BridgeToken =
+  // | SwapsTokenObject
+  (SwapsEthToken | SwapsTokenObject) & {
+    aggregators?: string[];
+  };
 
 // Types copied from Metabridge API
 export enum BridgeFlag {

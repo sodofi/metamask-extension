@@ -9,11 +9,9 @@ import { BigNumber } from 'bignumber.js';
 import {
   getIsBridgeEnabled,
   getMarketData,
-  getSwapsDefaultToken,
   getUSDConversionRate,
   getUSDConversionRateByChainId,
   selectConversionRateByChainId,
-  SwapsEthToken,
 } from '../../selectors/selectors';
 import {
   ALLOWED_BRIDGE_CHAIN_IDS,
@@ -28,17 +26,18 @@ import {
   // eslint-disable-next-line import/no-restricted-paths
 } from '../../../app/scripts/controllers/bridge/types';
 import { createDeepEqualSelector } from '../../../shared/modules/selectors/util';
+import { SWAPS_CHAINID_DEFAULT_TOKEN_MAP } from '../../../shared/constants/swaps';
 import {
   getProviderConfig,
   getNetworkConfigurationsByChainId,
 } from '../../../shared/modules/selectors/networks';
-import { SwapsTokenObject } from '../../../shared/constants/swaps';
 import { getConversionRate, getGasFeeEstimates } from '../metamask/metamask';
 // TODO: Remove restricted import
 // eslint-disable-next-line import/no-restricted-paths
 import { RequestStatus } from '../../../app/scripts/controllers/bridge/constants';
 import {
   L1GasFees,
+  BridgeToken,
   QuoteMetadata,
   QuoteResponse,
   SortOrder,
@@ -53,8 +52,8 @@ import {
   calcTotalGasFee,
   isNativeAddress,
 } from '../../pages/bridge/utils/quote';
-import { decGWEIToHexWEI } from '../../../shared/modules/conversion.utils';
 import { calcTokenAmount } from '../../../shared/lib/transactions-controller-utils';
+import { decGWEIToHexWEI } from '../../../shared/modules/conversion.utils';
 import {
   exchangeRatesFromNativeAndCurrencyRates,
   exchangeRateFromMarketData,
@@ -155,17 +154,22 @@ export const getToTokens = (state: BridgeAppState) => {
   return state.bridge.toChainId ? state.metamask.bridgeState.destTokens : {};
 };
 
-export const getFromToken = (
-  state: BridgeAppState,
-): SwapsTokenObject | SwapsEthToken | null => {
-  return state.bridge.fromToken?.address
-    ? state.bridge.fromToken
-    : getSwapsDefaultToken(state);
-};
+export const getFromToken = createSelector(
+  (state: BridgeAppState) => state.bridge.fromToken,
+  getFromChain,
+  (fromToken, fromChain): BridgeToken | null => {
+    if (!fromChain?.chainId) {
+      return null;
+    }
+    return fromToken?.address
+      ? fromToken
+      : SWAPS_CHAINID_DEFAULT_TOKEN_MAP[
+          fromChain.chainId as keyof typeof SWAPS_CHAINID_DEFAULT_TOKEN_MAP
+        ];
+  },
+);
 
-export const getToToken = (
-  state: BridgeAppState,
-): SwapsTokenObject | SwapsEthToken | null => {
+export const getToToken = (state: BridgeAppState): BridgeToken | null => {
   return state.bridge.toToken;
 };
 

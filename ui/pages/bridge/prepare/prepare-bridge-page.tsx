@@ -29,6 +29,7 @@ import {
   getToTokens,
   getToTopAssets,
   getBridgeQuotes,
+  getFromAmountInCurrency,
 } from '../../../ducks/bridge/selectors';
 import {
   Box,
@@ -87,6 +88,7 @@ const PrepareBridgePage = () => {
   const toChain = useSelector(getToChain);
 
   const fromAmount = useSelector(getFromAmount);
+  const fromAmountInFiat = useSelector(getFromAmountInCurrency);
 
   const providerConfig = useSelector(getProviderConfig);
   const slippage = useSelector(getSlippage);
@@ -123,7 +125,7 @@ const PrepareBridgePage = () => {
       destTokenAddress: toToken?.address || undefined,
       srcTokenAmount:
         fromAmount && fromAmount !== '' && fromToken?.decimals
-          ? calcTokenValue(fromAmount, fromToken.decimals).toString()
+          ? calcTokenValue(fromAmount, fromToken.decimals).toFixed()
           : undefined,
       srcChainId: fromChain?.chainId
         ? Number(hexToDecimal(fromChain.chainId))
@@ -224,7 +226,7 @@ const PrepareBridgePage = () => {
         borderColor={BorderColor.borderMuted}
       >
         <BridgeInputGroup
-          header={t('bridgeFrom')}
+          header={t('swapSelectToken')}
           token={fromToken}
           onAmountChange={(e) => {
             dispatch(setFromTokenInputValue(e));
@@ -265,6 +267,10 @@ const PrepareBridgePage = () => {
           customTokenListGenerator={
             fromTokens && fromTopAssets ? fromTokenListGenerator : undefined
           }
+          onMaxButtonClick={(value: string) => {
+            dispatch(setFromTokenInputValue(value));
+          }}
+          amountInFiat={fromAmountInFiat}
           amountFieldProps={{
             testId: 'from-amount',
             autoFocus: true,
@@ -313,7 +319,7 @@ const PrepareBridgePage = () => {
         </Box>
 
         <BridgeInputGroup
-          header={t('bridgeTo')}
+          header={t('swapSelectToken')}
           token={toToken}
           onAssetChange={(token) => {
             token?.address &&
@@ -341,12 +347,19 @@ const PrepareBridgePage = () => {
               ? toTokenListGenerator
               : fromTokenListGenerator
           }
+          amountInFiat={
+            activeQuote?.toTokenAmount?.valueInCurrency || undefined
+          }
           amountFieldProps={{
             testId: 'to-amount',
             readOnly: true,
             disabled: true,
             value: activeQuote?.toTokenAmount?.amount.toFixed() ?? '0',
-            className: activeQuote?.toTokenAmount.amount
+            // value: activeQuote?.toTokenAmount?.amount
+            //   ? activeQuote.toTokenAmount.amount.toNumber()
+            //   : undefined,
+            autoFocus: false,
+            className: activeQuote?.toTokenAmount?.amount
               ? 'amount-input defined'
               : 'amount-input',
           }}

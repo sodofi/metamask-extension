@@ -680,6 +680,9 @@
   "autoLockTimeLimitDescription": {
     "message": "Set the idle time in minutes before MetaMask will become locked."
   },
+  "available": {
+    "message": "$1 $2 available"
+  },
   "average": {
     "message": "Average"
   },
@@ -3724,6 +3727,7 @@
   "on": {
     "message": "On"
   },
+  "onNetwork": { "message": "on $1" },
   "onboardedMetametricsAccept": {
     "message": "I agree"
   },
@@ -6072,7 +6076,7 @@
     "message": "Potentially inauthentic token"
   },
   "swapTokenVerifiedSources": {
-    "message": "Confirmed by $1 sources. Verify on $2.",
+    "message": "Confirmed by $1 sources. Verify on $2",
     "description": "$1 the number of sources that have verified the token, $2 points the user to a block explorer as a place they can verify information about the token."
   },
   "swapTooManyDecimalsError": {

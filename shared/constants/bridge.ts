@@ -31,3 +31,5 @@ export const BRIDGE_QUOTE_MAX_RETURN_DIFFERENCE_PERCENTAGE = 0.8; // if a quote 
 
 export const BRIDGE_PREFERRED_GAS_ESTIMATE = 'medium';
 export const BRIDGE_DEFAULT_SLIPPAGE = 0.5;
+export const BRIDGE_MIN_FIAT_SRC_AMOUNT = 10;
+export const BRIDGE_MM_FEE_RATE = 0.875;
