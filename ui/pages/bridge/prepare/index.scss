@@ -65,6 +65,11 @@
     }
   }
 
+  .mm-select-button__content {
+    max-height: 100%;
+    overflow: hidden;
+  }
+
   .amount-input {
     border: none;
 
