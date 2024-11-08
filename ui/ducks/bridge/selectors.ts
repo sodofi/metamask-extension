@@ -113,21 +113,13 @@ export const getFromChain = createDeepEqualSelector(
 );
 
 export const getToChains = createDeepEqualSelector(
-  getFromChain,
   getAllBridgeableNetworks,
   (state: BridgeAppState) => state.metamask.bridgeState?.bridgeFeatureFlags,
-  (
-    fromChain,
-    allBridgeableNetworks,
-    bridgeFeatureFlags,
-  ): NetworkConfiguration[] =>
-    allBridgeableNetworks.filter(
-      ({ chainId }) =>
-        fromChain?.chainId &&
-        chainId !== fromChain.chainId &&
-        bridgeFeatureFlags[
-          BridgeFeatureFlagsKey.NETWORK_DEST_ALLOWLIST
-        ].includes(chainId),
+  (allBridgeableNetworks, bridgeFeatureFlags): NetworkConfiguration[] =>
+    allBridgeableNetworks.filter(({ chainId }) =>
+      bridgeFeatureFlags[BridgeFeatureFlagsKey.NETWORK_DEST_ALLOWLIST].includes(
+        chainId,
+      ),
     ),
 );
 
