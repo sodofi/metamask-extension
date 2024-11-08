@@ -7,8 +7,6 @@
 }
 
 .prepare-bridge-page {
-  display: flex;
-  flex-flow: column;
   flex: 1;
   width: 100%;
   gap: 24px;
@@ -72,6 +70,10 @@
 
   .amount-input {
     border: none;
+    padding: 0;
+    width: 100%;
+    gap: 4px;
+    height: fit-content;
 
     input {
       text-align: right;
@@ -179,6 +181,18 @@
     &:disabled {
       cursor: not-allowed;
     }
+  }
+
+  .mascot-background-animation__animation {
+    margin-top: 24px;
+    margin-bottom: 16px;
+  }
+
+  .highlight {
+    padding: 16px;
+    background: var(--color-background-alternative);
+    border: none;
+    border-radius: 8px;
   }
 }
 

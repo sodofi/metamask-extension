@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Button } from '../../../components/component-library';
+import {
+  ButtonPrimary,
+  ButtonPrimarySize,
+} from '../../../components/component-library';
 import {
   getFromAmount,
   getFromChain,
@@ -18,6 +21,10 @@ import { useRequestProperties } from '../../../hooks/bridge/events/useRequestPro
 import { useRequestMetadataProperties } from '../../../hooks/bridge/events/useRequestMetadataProperties';
 import { useTradeProperties } from '../../../hooks/bridge/events/useTradeProperties';
 import { MetaMetricsEventName } from '../../../../shared/constants/metametrics';
+import {
+  BlockSize,
+  TextVariant,
+} from '../../../helpers/constants/design-system';
 
 export const BridgeCTAButton = () => {
   const t = useI18nContext();
@@ -79,7 +86,10 @@ export const BridgeCTAButton = () => {
   ]);
 
   return (
-    <Button
+    <ButtonPrimary
+      width={BlockSize.Full}
+      size={activeQuote ? ButtonPrimarySize.Md : ButtonPrimarySize.Lg}
+      variant={TextVariant.bodyMd}
       data-testid="bridge-cta-button"
       onClick={() => {
         if (activeQuote && isTxSubmittable) {
@@ -100,6 +110,6 @@ export const BridgeCTAButton = () => {
       disabled={!isTxSubmittable}
     >
       {label}
-    </Button>
+    </ButtonPrimary>
   );
 };

@@ -14,7 +14,6 @@ import {
   formatEtaInMinutes,
 } from '../utils/quote';
 import { useCountdownTimer } from '../../../hooks/bridge/useCountdownTimer';
-import MascotBackgroundAnimation from '../../swaps/mascot-background-animation/mascot-background-animation';
 import { getCurrentCurrency } from '../../../selectors';
 import { getNativeCurrency } from '../../../ducks/metamask/metamask';
 import { useCrossChainSwapsEventTracker } from '../../../hooks/bridge/useCrossChainSwapsEventTracker';
@@ -40,14 +39,6 @@ export const BridgeQuoteCard = () => {
   const quoteListProperties = useQuoteProperties();
 
   const [showAllQuotes, setShowAllQuotes] = useState(false);
-
-  if (isLoading && !activeQuote) {
-    return (
-      <Box>
-        <MascotBackgroundAnimation />
-      </Box>
-    );
-  }
 
   return activeQuote ? (
     <Box className="quote-card">

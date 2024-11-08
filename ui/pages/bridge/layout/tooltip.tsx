@@ -30,7 +30,7 @@ const Tooltip = React.forwardRef(
     style,
     ...props
   }: PopoverProps<'div'> & {
-    triggerElement: React.ReactElement;
+    triggerElement?: React.ReactElement;
     disabled?: boolean;
     onClose?: () => void;
     iconName?: IconName;

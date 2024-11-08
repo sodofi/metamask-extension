@@ -61,7 +61,6 @@ const generateAssetFromToken = (
 };
 
 export const BridgeInputGroup = ({
-  className,
   header,
   token,
   onAssetChange,
@@ -70,7 +69,6 @@ export const BridgeInputGroup = ({
   customTokenListGenerator,
   amountFieldProps = {},
 }: {
-  className: string;
   onAmountChange?: (value: string) => void;
   token: SwapsTokenObject | SwapsEthToken | null;
   amountFieldProps?: Pick<
@@ -110,7 +108,7 @@ export const BridgeInputGroup = ({
     amountFieldProps?.readOnly || amountFieldProps?.disabled;
 
   return (
-    <Box className={className}>
+    <Box>
       <Box className="prepare-bridge-page__input-row">
         <AssetPicker
           header={header}
