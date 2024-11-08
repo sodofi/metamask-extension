@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  Box,
-  Button,
-  ButtonVariant,
-  Text,
-} from '../../../components/component-library';
+import { Text, PopoverPosition } from '../../../components/component-library';
 import { getBridgeQuotes } from '../../../ducks/bridge/selectors';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import {
@@ -21,8 +16,17 @@ import { useRequestProperties } from '../../../hooks/bridge/events/useRequestPro
 import { useRequestMetadataProperties } from '../../../hooks/bridge/events/useRequestMetadataProperties';
 import { useQuoteProperties } from '../../../hooks/bridge/events/useQuoteProperties';
 import { MetaMetricsEventName } from '../../../../shared/constants/metametrics';
+import {
+  AlignItems,
+  BlockSize,
+  JustifyContent,
+  TextAlign,
+  TextColor,
+  TextVariant,
+} from '../../../helpers/constants/design-system';
+import { Row, Column, Tooltip } from '../layout';
+import { BRIDGE_MM_FEE_RATE } from '../../../../shared/constants/bridge';
 import { BridgeQuotesModal } from './bridge-quotes-modal';
-import { QuoteInfoRow } from './quote-info-row';
 
 export const BridgeQuoteCard = () => {
   const t = useI18nContext();
@@ -40,89 +44,112 @@ export const BridgeQuoteCard = () => {
 
   const [showAllQuotes, setShowAllQuotes] = useState(false);
 
-  return activeQuote ? (
-    <Box className="quote-card">
+  return (
+    <>
       <BridgeQuotesModal
         isOpen={showAllQuotes}
         onClose={() => setShowAllQuotes(false)}
       />
-      <Box className="bridge-box quote-card__timer">
-        {!isLoading && isQuoteGoingToRefresh && (
-          <Text>{t('swapNewQuoteIn', [secondsUntilNextRefresh])}</Text>
-        )}
-      </Box>
-
-      <Box className="bridge-box prepare-bridge-page__content quote-card__content">
-        <QuoteInfoRow
-          label={t('estimatedTime')}
-          tooltipText={t('bridgeTimingTooltipText')}
-          description={t('bridgeTimingMinutes', [
-            formatEtaInMinutes(activeQuote.estimatedProcessingTimeInSeconds),
-          ])}
-        />
-        {activeQuote.swapRate && (
-          <QuoteInfoRow
-            label={t('quoteRate')}
-            description={`1 ${
-              activeQuote.quote.srcAsset.symbol
-            } = ${formatTokenAmount(
-              activeQuote.swapRate,
-              activeQuote.quote.destAsset.symbol,
-            )}`}
-          />
-        )}
-        {activeQuote.totalNetworkFee && (
-          <QuoteInfoRow
-            label={t('totalFees')}
-            tooltipText={t('bridgeTotalFeesTooltipText')}
-            description={
-              formatCurrencyAmount(
-                activeQuote.totalNetworkFee?.valueInCurrency,
-                currency,
-                2,
-              ) ??
-              formatTokenAmount(activeQuote.totalNetworkFee?.amount, ticker, 6)
-            }
-            secondaryDescription={
-              activeQuote.totalNetworkFee?.valueInCurrency
-                ? formatTokenAmount(
-                    activeQuote.totalNetworkFee?.amount,
-                    ticker,
-                    6,
-                  )
-                : undefined
-            }
-          />
-        )}
-      </Box>
-
-      <Box className="bridge-box quote-card__footer">
-        <span>
-          <Text>{t('swapIncludesMMFee', [0.875])}</Text>
-          <Button
-            variant={ButtonVariant.Link}
-            onClick={() => {
-              quoteRequestProperties &&
-                requestMetadataProperties &&
-                quoteListProperties &&
-                trackCrossChainSwapsEvent({
-                  event: MetaMetricsEventName.AllQuotesOpened,
-                  properties: {
-                    ...quoteRequestProperties,
-                    ...requestMetadataProperties,
-                    ...quoteListProperties,
-                  },
-                });
-              setShowAllQuotes(true);
-            }}
-          >
-            <Text>{t('viewAllQuotes')}</Text>
-          </Button>
-        </span>
-        <Button variant={ButtonVariant.Link}>
-          <Text>{t('termsOfService')}</Text>
-        </Button>
-      </Box>
-    </Box>
-  ) : null;
+      {activeQuote ? (
+        <Column gap={3}>
+          <Row alignItems={AlignItems.flexStart}>
+            <Column textAlign={TextAlign.Left}>
+              <Row gap={1} justifyContent={JustifyContent.flexStart}>
+                <Text variant={TextVariant.bodyLgMedium}>{t('bestPrice')}</Text>
+                <Tooltip
+                  title={t('howQuotesWork')}
+                  position={PopoverPosition.TopStart}
+                  offset={[-16, 16]}
+                >
+                  {t('howQuotesWorkExplanation', [BRIDGE_MM_FEE_RATE])}
+                </Tooltip>
+              </Row>
+              <Text
+                as={'a'}
+                variant={TextVariant.bodySm}
+                color={TextColor.primaryDefault}
+                onClick={() => {
+                  quoteRequestProperties &&
+                    requestMetadataProperties &&
+                    quoteListProperties &&
+                    trackCrossChainSwapsEvent({
+                      event: MetaMetricsEventName.AllQuotesOpened,
+                      properties: {
+                        ...quoteRequestProperties,
+                        ...requestMetadataProperties,
+                        ...quoteListProperties,
+                      },
+                    });
+                  setShowAllQuotes(true);
+                }}
+              >
+                {t('viewAllQuotes')}
+              </Text>
+            </Column>
+            {!isLoading && isQuoteGoingToRefresh && (
+              <Column height={BlockSize.Full} alignItems={AlignItems.flexEnd}>
+                <Text color={TextColor.textMuted}>
+                  {secondsUntilNextRefresh}
+                </Text>
+              </Column>
+            )}
+          </Row>
+          <Column gap={1}>
+            <Row>
+              <Text color={TextColor.textAlternative}>
+                {t('crossChainSwapRate')}
+              </Text>
+              <Text>{`1 ${
+                activeQuote.quote.srcAsset.symbol
+              } = ${formatTokenAmount(
+                activeQuote.swapRate,
+                activeQuote.quote.destAsset.symbol,
+              )}`}</Text>
+            </Row>
+            {/* TODO add tooltip on hover */}
+            <Row>
+              <Text color={TextColor.textAlternative}>{t('networkFee')}</Text>
+              <Row gap={1}>
+                <Text color={TextColor.textMuted}>
+                  {activeQuote.totalNetworkFee?.valueInCurrency
+                    ? formatTokenAmount(
+                        activeQuote.totalNetworkFee?.amount,
+                        ticker,
+                        6,
+                      )
+                    : undefined}
+                </Text>
+                <Text>
+                  {formatCurrencyAmount(
+                    activeQuote.totalNetworkFee?.valueInCurrency,
+                    currency,
+                  ) ??
+                    formatTokenAmount(
+                      activeQuote.totalNetworkFee?.amount,
+                      ticker,
+                      6,
+                    )}
+                </Text>
+              </Row>
+            </Row>
+            <Row>
+              <Text color={TextColor.textAlternative}>
+                {t('estimatedTime')}
+              </Text>
+              <Text>
+                {t('bridgeTimingMinutes', [
+                  formatEtaInMinutes(
+                    activeQuote.estimatedProcessingTimeInSeconds,
+                  ),
+                ])}
+              </Text>
+            </Row>
+            <Text variant={TextVariant.bodySm} color={TextColor.textMuted}>
+              {t('rateIncludesMMFee', [BRIDGE_MM_FEE_RATE])}
+            </Text>
+          </Column>
+        </Column>
+      ) : null}
+    </>
+  );
 };

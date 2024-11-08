@@ -19,7 +19,7 @@ import {
   ERC20Asset,
   NativeAsset,
 } from '../../../components/multichain/asset-picker-amount/asset-picker-modal/types';
-import { formatFiatAmount } from '../utils/quote';
+import { formatCurrencyAmount } from '../utils/quote';
 import { Column, Row } from '../layout';
 import {
   BlockSize,
@@ -207,7 +207,7 @@ export const BridgeInputGroup = ({
             textAlign={TextAlign.End}
             ellipsis
           >
-            {amountInFiat && formatFiatAmount(amountInFiat, currency)}
+            {amountInFiat && formatCurrencyAmount(amountInFiat, currency)}
           </Text>
         </Column>
       </Row>

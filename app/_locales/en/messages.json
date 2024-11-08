@@ -747,6 +747,9 @@
   "beCareful": {
     "message": "Be careful"
   },
+  "bestPrice": {
+    "message": "Best price"
+  },
   "beta": {
     "message": "Beta"
   },
@@ -912,9 +915,6 @@
   "bridgeTimingMinutes": {
     "message": "$1 min",
     "description": "$1 is the ticker symbol of a an asset the user is being prompted to purchase"
-  },
-  "bridgeTimingTooltipText": {
-    "message": "This is the estimated time it will take for the bridging to be complete."
   },
   "bridgeTo": {
     "message": "Bridge to"
@@ -1433,6 +1433,9 @@
   "crossChainAggregatedBalancePopover": {
     "message": "This reflects the value of all tokens you own on all networks. If you prefer seeing this value in ETH or other currencies, go to $1.",
     "description": "$1 represents the settings page"
+  },
+  "crossChainSwapRate": {
+    "message": "Swap rate"
   },
   "crossChainSwapsLink": {
     "message": "Swap across networks with MetaMask Portfolio"
@@ -2111,7 +2114,7 @@
     "message": "Amount paid to process the transaction on network."
   },
   "estimatedTime": {
-    "message": "Estimated time"
+    "message": "Est. time"
   },
   "ethGasPriceFetchWarning": {
     "message": "Backup gas price is provided as the main gas estimation service is unavailable right now."
@@ -2489,6 +2492,12 @@
   },
   "holdToRevealUnlockedLabel": {
     "message": "hold to reveal circle unlocked"
+  },
+  "howQuotesWork": {
+    "message": "How quotes work"
+  },
+  "howQuotesWorkExplanation": {
+    "message": "This quote has the best return of the quotes we searched. This is based on the swap rate, which includes bridging fees and a $1% MetaMask fee, minus gas fees. Gas fees depend on how busy the network is and how complex the transaction is."
   },
   "id": {
     "message": "ID"
@@ -4480,6 +4489,9 @@
   },
   "rank": {
     "message": "Rank"
+  },
+  "rateIncludesMMFee": {
+    "message": "Rate includes $1% MetaMask fee"
   },
   "reAddAccounts": {
     "message": "re-add any other accounts"
@@ -6641,7 +6653,7 @@
     "message": "View activity"
   },
   "viewAllQuotes": {
-    "message": "view all quotes"
+    "message": "View all quotes"
   },
   "viewContact": {
     "message": "View contact"
