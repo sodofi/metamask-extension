@@ -34,6 +34,10 @@ import {
 } from '../../../helpers/constants/design-system';
 import { Row, Column, Tooltip } from '../layout';
 import { BRIDGE_MM_FEE_RATE } from '../../../../shared/constants/bridge';
+import useLatestBalance from '../../../hooks/bridge/useLatestBalance';
+import { SWAPS_CHAINID_DEFAULT_TOKEN_MAP } from '../../../../shared/constants/swaps';
+import { getCurrentChainId } from '../../../../shared/modules/selectors/networks';
+import useRamps from '../../../hooks/ramps/useRamps/useRamps';
 import { BridgeQuotesModal } from './bridge-quotes-modal';
 
 export const BridgeQuoteCard = () => {
@@ -42,14 +46,24 @@ export const BridgeQuoteCard = () => {
     useSelector(getBridgeQuotes);
   const currency = useSelector(getCurrentCurrency);
   const ticker = useSelector(getNativeCurrency);
-  const { isNoQuotesAvailable } = useSelector(getValidationErrors);
+  const { isNoQuotesAvailable, isInsufficientGasBalance } =
+    useSelector(getValidationErrors);
+
+  const currentChainId = useSelector(getCurrentChainId);
 
   const secondsUntilNextRefresh = useCountdownTimer();
+  const { balanceAmount: nativeAssetBalance } = useLatestBalance(
+    SWAPS_CHAINID_DEFAULT_TOKEN_MAP[
+      currentChainId as keyof typeof SWAPS_CHAINID_DEFAULT_TOKEN_MAP
+    ],
+    currentChainId,
+  );
 
   const trackCrossChainSwapsEvent = useCrossChainSwapsEventTracker();
   const { quoteRequestProperties } = useRequestProperties();
   const requestMetadataProperties = useRequestMetadataProperties();
   const quoteListProperties = useQuoteProperties();
+  const { openBuyCryptoInPdapp } = useRamps();
 
   const [showAllQuotes, setShowAllQuotes] = useState(false);
 
@@ -165,6 +179,16 @@ export const BridgeQuoteCard = () => {
           severity={BannerAlertSeverity.Danger}
           description={t('noOptionsAvailableMessage')}
           textAlign={TextAlign.Left}
+        />
+      )}
+      {!isLoading && isInsufficientGasBalance(nativeAssetBalance) && (
+        <BannerAlert
+          title={t('bridgeValidationInsufficientGasTitle', [ticker])}
+          severity={BannerAlertSeverity.Warning}
+          description={t('bridgeValidationInsufficientGasMessage', [ticker])}
+          textAlign={TextAlign.Left}
+          actionButtonLabel={t('buyMoreAsset', [ticker])}
+          actionButtonOnClick={() => openBuyCryptoInPdapp()}
         />
       )}
     </>

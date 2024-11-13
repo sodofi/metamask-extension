@@ -971,6 +971,15 @@
   "bridgeTypeDirectionTo": {
     "message": "To"
   },
+  "bridgeValidationInsufficientGasMessage": {
+    "message": "You don't have enough $1 to pay the gas fee for this bridge. Enter a smaller amount or buy more $1."
+  },
+  "bridgeValidationInsufficientGasReason": {
+    "message": "Insufficient funds for gas"
+  },
+  "bridgeValidationInsufficientGasTitle": {
+    "message": "More $1 needed for gas"
+  },
   "browserNotSupported": {
     "message": "Your browser is not supported..."
   },

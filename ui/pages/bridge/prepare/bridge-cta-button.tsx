@@ -3,6 +3,9 @@ import { useSelector } from 'react-redux';
 import {
   ButtonPrimary,
   ButtonPrimarySize,
+  Icon,
+  IconName,
+  PopoverPosition,
 } from '../../../components/component-library';
 import {
   getFromAmount,
@@ -25,6 +28,9 @@ import {
   BlockSize,
   TextVariant,
 } from '../../../helpers/constants/design-system';
+import { SWAPS_CHAINID_DEFAULT_TOKEN_MAP } from '../../../../shared/constants/swaps';
+import { Row, Tooltip } from '../layout';
+import { getNativeCurrency } from '../../../ducks/metamask/metamask';
 
 export const BridgeCTAButton = () => {
   const t = useI18nContext();
@@ -40,16 +46,36 @@ export const BridgeCTAButton = () => {
 
   const { submitBridgeTransaction } = useSubmitBridgeTransaction();
 
-  const { isNoQuotesAvailable, isInsufficientBalance } =
-    useSelector(getValidationErrors);
+  const {
+    isNoQuotesAvailable,
+    isInsufficientBalance: isInsufficientBalance_,
+    isInsufficientGasBalance: isInsufficientGasBalance_,
+    isInsufficientGasForQuote: isInsufficientGasForQuote_,
+  } = useSelector(getValidationErrors);
 
   const { balanceAmount } = useLatestBalance(fromToken, fromChain?.chainId);
+  const { balanceAmount: nativeAssetBalance } = useLatestBalance(
+    fromChain?.chainId
+      ? SWAPS_CHAINID_DEFAULT_TOKEN_MAP[
+          fromChain.chainId as keyof typeof SWAPS_CHAINID_DEFAULT_TOKEN_MAP
+        ]
+      : null,
+    fromChain?.chainId,
+  );
 
   const isTxSubmittable = useIsTxSubmittable();
   const trackCrossChainSwapsEvent = useCrossChainSwapsEventTracker();
   const { quoteRequestProperties } = useRequestProperties();
   const requestMetadataProperties = useRequestMetadataProperties();
   const tradeProperties = useTradeProperties();
+
+  const ticker = useSelector(getNativeCurrency);
+
+  const isInsufficientBalance = isInsufficientBalance_(balanceAmount);
+  const isInsufficientGasBalance =
+    isInsufficientGasBalance_(nativeAssetBalance);
+  const isInsufficientGasForQuote =
+    isInsufficientGasForQuote_(nativeAssetBalance);
 
   const label = useMemo(() => {
     if (isLoading && !isTxSubmittable) {
@@ -60,8 +86,24 @@ export const BridgeCTAButton = () => {
       return t('swapQuotesNotAvailableErrorTitle');
     }
 
-    if (isInsufficientBalance(balanceAmount)) {
+    if (isInsufficientBalance) {
       return t('alertReasonInsufficientBalance');
+    }
+
+    if (isInsufficientGasForQuote) {
+      return (
+        <Row gap={1}>
+          {t('bridgeValidationInsufficientGasReason')}
+          <Tooltip
+            title={t('bridgeValidationInsufficientGasTitle', [ticker])}
+            position={PopoverPosition.TopEnd}
+            iconName={IconName.Info}
+            isOpen
+          >
+            {t('bridgeValidationInsufficientGasMessage', [ticker])}
+          </Tooltip>
+        </Row>
+      );
     }
 
     if (!fromAmount) {
@@ -80,9 +122,12 @@ export const BridgeCTAButton = () => {
     isLoading,
     fromAmount,
     toToken,
+    ticker,
     isTxSubmittable,
     balanceAmount,
     isInsufficientBalance,
+    isInsufficientGasBalance,
+    isInsufficientGasForQuote,
   ]);
 
   return (
