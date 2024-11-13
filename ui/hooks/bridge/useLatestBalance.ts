@@ -1,7 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Hex } from '@metamask/utils';
 import { Numeric } from '../../../shared/modules/Numeric';
-import { DEFAULT_PRECISION } from '../useCurrencyDisplay';
 import { getCurrentChainId } from '../../../shared/modules/selectors/networks';
 import { getSelectedInternalAccount, SwapsEthToken } from '../../selectors';
 import { SwapsTokenObject } from '../../../shared/constants/swaps';
@@ -54,10 +53,7 @@ const useLatestBalance = (
   return {
     formattedBalance:
       token && latestBalance
-        ? latestBalance
-            .shiftedBy(tokenDecimals)
-            .round(DEFAULT_PRECISION)
-            .toString()
+        ? latestBalance.shiftedBy(tokenDecimals).round(4).toString()
         : undefined,
     balanceAmount:
       token && latestBalance
