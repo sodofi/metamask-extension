@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Hex } from '@metamask/utils';
 import { useSelector } from 'react-redux';
 import { BigNumber } from 'bignumber.js';
@@ -10,6 +10,7 @@ import {
   TextField,
   TextFieldType,
   ButtonLink,
+  PopoverPosition,
 } from '../../../components/component-library';
 import { AssetPicker } from '../../../components/multichain/asset-picker-amount/asset-picker';
 import { TabName } from '../../../components/multichain/asset-picker-amount/asset-picker-modal/asset-picker-modal-tabs';
@@ -20,7 +21,7 @@ import {
   NativeAsset,
 } from '../../../components/multichain/asset-picker-amount/asset-picker-modal/types';
 import { formatCurrencyAmount } from '../utils/quote';
-import { Column, Row } from '../layout';
+import { Column, Row, Tooltip } from '../layout';
 import {
   BlockSize,
   Display,
@@ -36,12 +37,13 @@ import {
   CHAIN_ID_TO_CURRENCY_SYMBOL_MAP,
   CHAIN_ID_TOKEN_IMAGE_MAP,
 } from '../../../../shared/constants/network';
+import { BRIDGE_QUOTE_MAX_RETURN_DIFFERENCE_PERCENTAGE } from '../../../../shared/constants/bridge';
+import { BridgeToken } from '../types';
 import useLatestBalance from '../../../hooks/bridge/useLatestBalance';
 import {
   getBridgeQuotes,
   getValidationErrors,
 } from '../../../ducks/bridge/selectors';
-import { BridgeToken } from '../types';
 import { BridgeAssetPickerButton } from './components/bridge-asset-picker-button';
 
 const generateAssetFromToken = (
@@ -102,7 +104,8 @@ export const BridgeInputGroup = ({
   const t = useI18nContext();
 
   const { isLoading } = useSelector(getBridgeQuotes);
-  const { isInsufficientBalance } = useSelector(getValidationErrors);
+  const { isInsufficientBalance, isEstimatedReturnLow } =
+    useSelector(getValidationErrors);
   const currency = useSelector(getCurrentCurrency);
 
   const selectedChainId = networkProps?.network?.chainId;
@@ -124,6 +127,8 @@ export const BridgeInputGroup = ({
       : undefined;
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const [isLowReturnTooltipOpen, setIsLowReturnTooltipOpen] = useState(true);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -277,6 +282,19 @@ export const BridgeInputGroup = ({
               </ButtonLink>
             )}
         </Text>
+        {isAmountReadOnly && isEstimatedReturnLow && isLowReturnTooltipOpen && (
+          <Tooltip
+            title={t('lowEstimatedReturnTooltipTitle')}
+            position={PopoverPosition.Top}
+            isOpen={isLowReturnTooltipOpen}
+            onClose={() => setIsLowReturnTooltipOpen(false)}
+            triggerElement={<span />}
+          >
+            {t('lowEstimatedReturnTooltipMessage', [
+              BRIDGE_QUOTE_MAX_RETURN_DIFFERENCE_PERCENTAGE * 100,
+            ])}
+          </Tooltip>
+        )}
       </Row>
     </Column>
   );
