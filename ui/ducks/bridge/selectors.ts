@@ -6,6 +6,7 @@ import { orderBy, uniqBy } from 'lodash';
 import { createSelector } from 'reselect';
 import { GasFeeEstimates } from '@metamask/gas-fee-controller';
 import { BigNumber } from 'bignumber.js';
+import { calcTokenAmount } from '@metamask/notification-services-controller/push-services';
 import {
   getIsBridgeEnabled,
   getMarketData,
@@ -52,7 +53,6 @@ import {
   calcTotalGasFee,
   isNativeAddress,
 } from '../../pages/bridge/utils/quote';
-import { calcTokenAmount } from '../../../shared/lib/transactions-controller-utils';
 import { decGWEIToHexWEI } from '../../../shared/modules/conversion.utils';
 import {
   exchangeRatesFromNativeAndCurrencyRates,
@@ -496,12 +496,10 @@ export const getFromAmountInCurrency = createSelector(
 
 export const getValidationErrors = createDeepEqualSelector(
   getBridgeQuotes,
-  getFromAmount,
   _getValidatedSrcAmount,
   getFromToken,
   (
     { activeQuote, quotesLastFetchedMs, isLoading },
-    fromAmount,
     validatedSrcAmount,
     fromToken,
   ) => {
@@ -531,7 +529,9 @@ export const getValidationErrors = createDeepEqualSelector(
         return false;
       },
       isInsufficientBalance: (balance?: BigNumber) =>
-        fromAmount && balance !== undefined ? balance.lt(fromAmount) : false,
+        validatedSrcAmount && balance !== undefined
+          ? balance.lt(validatedSrcAmount)
+          : false,
       isEstimatedReturnLow:
         activeQuote?.sentAmount?.valueInCurrency &&
         activeQuote?.adjustedReturn?.valueInCurrency

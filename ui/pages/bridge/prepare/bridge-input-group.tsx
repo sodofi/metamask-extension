@@ -163,20 +163,27 @@ export const BridgeInputGroup = ({
         >
           <TextField
             inputRef={inputRef}
-            type={TextFieldType.Number}
+            type={TextFieldType.Text}
             className="amount-input"
             placeholder={
               isLoading && isAmountReadOnly ? t('bridgeCalculatingAmount') : '0'
             }
-            onKeyDown={(e?: React.KeyboardEvent<HTMLDivElement>) => {
+            onKeyPress={(e?: React.KeyboardEvent<HTMLDivElement>) => {
+              // Only allow numbers and at most one decimal point
               if (
                 e &&
-                ['e', 'E', '-', 'ArrowUp', 'ArrowDown'].includes(e.key)
+                !/^[0-9]*\.{0,1}[0-9]*$/u.test(
+                  `${amountFieldProps.value ?? ''}${e.key}`,
+                )
               ) {
                 e.preventDefault();
               }
             }}
-            onChange={(e) => onAmountChange?.(e.target.value)}
+            onChange={(e) => {
+              // Remove characters that are not numbers or decimal points if rendering a controlled or pasted value
+              const cleanedValue = e.target.value.replace(/[^0-9.]+/gu, '');
+              onAmountChange?.(cleanedValue);
+            }}
             endAccessory={
               (token?.symbol?.length ?? 0) > 4 ||
               (isAmountReadOnly &&

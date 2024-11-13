@@ -124,8 +124,12 @@ const PrepareBridgePage = () => {
       srcTokenAddress: fromToken?.address,
       destTokenAddress: toToken?.address || undefined,
       srcTokenAmount:
-        fromAmount && fromAmount !== '' && fromToken?.decimals
-          ? calcTokenValue(fromAmount, fromToken.decimals).toFixed()
+        fromAmount && fromToken?.decimals
+          ? calcTokenValue(
+              // Treat empty or incomplete amount as 0
+              ['', '.'].includes(fromAmount) ? '0' : fromAmount,
+              fromToken.decimals,
+            ).toFixed()
           : undefined,
       srcChainId: fromChain?.chainId
         ? Number(hexToDecimal(fromChain.chainId))
