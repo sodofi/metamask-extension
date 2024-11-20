@@ -137,6 +137,7 @@ export const BridgeCTAButton = () => {
       size={activeQuote ? ButtonPrimarySize.Md : ButtonPrimarySize.Lg}
       variant={TextVariant.bodyMd}
       data-testid="bridge-cta-button"
+      style={{ boxShadow: 'none' }}
       onClick={() => {
         if (activeQuote && isTxSubmittable && !isSubmitting) {
           setIsSubmitting(true);

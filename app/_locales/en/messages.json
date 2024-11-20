@@ -912,6 +912,9 @@
     "message": "Swapping $1 for $2",
     "description": "$1 is the amount of the source asset, $2 is the amount of the destination asset"
   },
+  "bridgeTerms": {
+    "message": "Terms"
+  },
   "bridgeTimingMinutes": {
     "message": "$1 min",
     "description": "$1 is the ticker symbol of a an asset the user is being prompted to purchase"
@@ -977,6 +980,9 @@
   "bridgeValidationInsufficientGasTitle": {
     "message": "More $1 needed for gas"
   },
+  "bridging": {
+    "message": "Bridging"
+  },
   "browserNotSupported": {
     "message": "Your browser is not supported..."
   },
@@ -985,6 +991,9 @@
   },
   "builtAroundTheWorld": {
     "message": "MetaMask is designed and built around the world."
+  },
+  "bulletpoint": {
+    "message": "·"
   },
   "busy": {
     "message": "Busy"
@@ -1442,9 +1451,6 @@
   "crossChainAggregatedBalancePopover": {
     "message": "This reflects the value of all tokens you own on all networks. If you prefer seeing this value in ETH or other currencies, go to $1.",
     "description": "$1 represents the settings page"
-  },
-  "crossChainSwapRate": {
-    "message": "Swap rate"
   },
   "crossChainSwapsLink": {
     "message": "Swap across networks with MetaMask Portfolio"
@@ -2121,9 +2127,6 @@
   },
   "estimatedFeeTooltip": {
     "message": "Amount paid to process the transaction on network."
-  },
-  "estimatedTime": {
-    "message": "Est. time"
   },
   "ethGasPriceFetchWarning": {
     "message": "Backup gas price is provided as the main gas estimation service is unavailable right now."
@@ -3262,6 +3265,9 @@
   },
   "networkFee": {
     "message": "Network fee"
+  },
+  "networkFees": {
+    "message": "Network fees"
   },
   "networkIsBusy": {
     "message": "Network is busy. Gas prices are high and estimates are less accurate."
@@ -4512,7 +4518,7 @@
     "message": "Rank"
   },
   "rateIncludesMMFee": {
-    "message": "Rate includes $1% MetaMask fee"
+    "message": "Rate includes $1% fee"
   },
   "reAddAccounts": {
     "message": "re-add any other accounts"
@@ -6674,7 +6680,7 @@
     "message": "View activity"
   },
   "viewAllQuotes": {
-    "message": "View all quotes"
+    "message": "More quotes"
   },
   "viewContact": {
     "message": "View contact"
@@ -6806,7 +6812,7 @@
     "message": "What's this?"
   },
   "willApproveAmountForBridging": {
-    "message": "This will approve $1 $2 for bridging."
+    "message": "This will approve $1 for bridging."
   },
   "withdrawing": {
     "message": "Withdrawing"

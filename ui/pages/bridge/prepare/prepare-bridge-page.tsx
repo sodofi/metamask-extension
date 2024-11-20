@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import { debounce } from 'lodash';
 import { useHistory, useLocation } from 'react-router-dom';
+import { BigNumber } from 'bignumber.js';
 import {
   setFromChain,
   setFromToken,
@@ -33,6 +34,7 @@ import {
   Box,
   ButtonIcon,
   IconName,
+  PopoverPosition,
   Text,
 } from '../../../components/component-library';
 import {
@@ -54,7 +56,7 @@ import { hexToDecimal } from '../../../../shared/modules/conversion.utils';
 import { QuoteRequest } from '../types';
 import { calcTokenValue } from '../../../../shared/lib/swaps-utils';
 import { BridgeQuoteCard } from '../quotes/bridge-quote-card';
-import { isValidQuoteRequest } from '../utils/quote';
+import { formatTokenAmount, isValidQuoteRequest } from '../utils/quote';
 import { getProviderConfig } from '../../../../shared/modules/selectors/networks';
 import {
   CrossChainSwapsEventProperties,
@@ -99,7 +101,8 @@ const PrepareBridgePage = () => {
   const slippage = useSelector(getSlippage);
 
   const quoteRequest = useSelector(getQuoteRequest);
-  const { isLoading, activeQuote } = useSelector(getBridgeQuotes);
+  const { isLoading, activeQuote, isQuoteGoingToRefresh } =
+    useSelector(getBridgeQuotes);
 
   const fromTokenListGenerator = useTokensWithFiltering(
     fromTokens,
@@ -116,6 +119,8 @@ const PrepareBridgePage = () => {
 
   const { flippedRequestProperties } = useRequestProperties();
   const trackCrossChainSwapsEvent = useCrossChainSwapsEventTracker();
+
+  const millisecondsUntilNextRefresh = useCountdownTimer();
 
   const [rotateSwitchTokens, setRotateSwitchTokens] = useState(false);
 
@@ -413,15 +418,31 @@ const PrepareBridgePage = () => {
             gap={3}
             className={activeQuote ? 'highlight' : ''}
             style={{
-              paddingBottom: activeQuote?.approval ? 8 : 'revert-layer',
-              paddingTop: activeQuote?.approval ? 12 : undefined,
+              paddingBottom: activeQuote?.approval ? 16 : 'revert-layer',
+              paddingTop: activeQuote?.approval ? 16 : undefined,
               paddingInline: 16,
+              position: 'relative',
+              overflow: 'hidden',
             }}
           >
+            {activeQuote && isQuoteGoingToRefresh && (
+              <Row
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  top: 0,
+                  width: `calc(100% * (${refreshRate} - ${millisecondsUntilNextRefresh}) / ${refreshRate})`,
+                  height: 4,
+                  maxWidth: '100%',
+                  transition: 'width 1s linear',
+                }}
+                backgroundColor={BackgroundColor.primaryMuted}
+              />
+            )}
             <BridgeQuoteCard />
-            <Footer padding={0} flexDirection={FlexDirection.Column} gap={1}>
+            <Footer padding={0} flexDirection={FlexDirection.Column} gap={2}>
               <BridgeCTAButton />
-              {activeQuote?.approval ? (
+              {activeQuote?.approval && fromAmount && fromToken ? (
                 <Row justifyContent={JustifyContent.center} gap={1}>
                   <Text
                     color={TextColor.textAlternativeSoft}
@@ -429,15 +450,22 @@ const PrepareBridgePage = () => {
                     textAlign={TextAlign.Center}
                   >
                     {t('willApproveAmountForBridging', [
-                      fromAmount,
-                      fromToken?.symbol,
+                      formatTokenAmount(
+                        new BigNumber(fromAmount),
+                        fromToken.symbol,
+                      ),
                     ])}
                   </Text>
                   {fromAmount && (
-                    <Tooltip title={t('grantExactAccess')}>
+                    <Tooltip
+                      display={Display.InlineBlock}
+                      position={PopoverPosition.Top}
+                      offset={[-48, 8]}
+                      title={t('grantExactAccess')}
+                    >
                       {t('bridgeApprovalWarning', [
                         fromAmount,
-                        fromToken?.symbol,
+                        fromToken.symbol,
                       ])}
                     </Tooltip>
                   )}
