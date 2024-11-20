@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   ButtonPrimary,
@@ -72,6 +72,8 @@ export const BridgeCTAButton = () => {
   const ticker = useSelector(getNativeCurrency);
 
   const isInsufficientBalance = isInsufficientBalance_(balanceAmount);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const isInsufficientGasBalance =
     isInsufficientGasBalance_(nativeAssetBalance);
   const isInsufficientGasForQuote =
@@ -137,7 +139,8 @@ export const BridgeCTAButton = () => {
       variant={TextVariant.bodyMd}
       data-testid="bridge-cta-button"
       onClick={() => {
-        if (activeQuote && isTxSubmittable) {
+        if (activeQuote && isTxSubmittable && !isSubmitting) {
+          setIsSubmitting(true);
           quoteRequestProperties &&
             requestMetadataProperties &&
             tradeProperties &&
@@ -152,7 +155,7 @@ export const BridgeCTAButton = () => {
           submitBridgeTransaction(activeQuote);
         }
       }}
-      disabled={!isTxSubmittable}
+      disabled={!isTxSubmittable || isSubmitting}
     >
       {label}
     </ButtonPrimary>
