@@ -3177,6 +3177,13 @@ export default class MetamaskController extends EventEmitter {
     );
     this.multichainBalancesController.start();
     this.multichainBalancesController.updateBalances();
+
+    this.controllerMessenger.subscribe(
+      'CurrencyRateController:stateChange',
+      ({ currentCurrency }) => {
+        this.multichainRatesController.setFiatCurrency(currentCurrency);
+      },
+    );
   }
 
   /**
