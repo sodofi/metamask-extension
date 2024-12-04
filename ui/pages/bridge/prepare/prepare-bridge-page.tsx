@@ -80,6 +80,10 @@ import { MetaMetricsEventName } from '../../../../shared/constants/metametrics';
 import { Footer } from '../../../components/multichain/pages/page';
 import MascotBackgroundAnimation from '../../swaps/mascot-background-animation/mascot-background-animation';
 import { Column, Row, Tooltip } from '../layout';
+import useRamps from '../../../hooks/ramps/useRamps/useRamps';
+import { getNativeCurrency } from '../../../ducks/metamask/metamask';
+import useLatestBalance from '../../../hooks/bridge/useLatestBalance';
+import { useCountdownTimer } from '../../../hooks/bridge/useCountdownTimer';
 import { BridgeInputGroup } from './bridge-input-group';
 import { BridgeCTAButton } from './bridge-cta-button';
 
@@ -155,6 +159,17 @@ const PrepareBridgePage = () => {
     // Reset controller and inputs on load
     dispatch(resetBridgeState());
   }, []);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isInsufficientGasForQuote(nativeAssetBalance)) {
+      scrollRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [isInsufficientGasForQuote(nativeAssetBalance)]);
 
   const quoteParams = useMemo(
     () => ({
@@ -510,6 +525,23 @@ const PrepareBridgePage = () => {
             textAlign={TextAlign.Left}
           />
         )}
+        {!isLoading &&
+          activeQuote &&
+          isInsufficientGasForQuote(nativeAssetBalance) && (
+            <BannerAlert
+              ref={scrollRef}
+              marginInline={4}
+              marginBottom={3}
+              title={t('bridgeValidationInsufficientGasTitle', [ticker])}
+              severity={BannerAlertSeverity.Danger}
+              description={t('bridgeValidationInsufficientGasMessage', [
+                ticker,
+              ])}
+              textAlign={TextAlign.Left}
+              actionButtonLabel={t('buyMoreAsset', [ticker])}
+              actionButtonOnClick={() => openBuyCryptoInPdapp()}
+            />
+          )}
       </Column>
     </Column>
   );

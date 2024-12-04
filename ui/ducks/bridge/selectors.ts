@@ -508,6 +508,7 @@ export const getValidationErrors = createDeepEqualSelector(
     { activeQuote, quotesLastFetchedMs, isLoading },
     validatedSrcAmount,
     fromToken,
+    fromTokenInputValue,
   ) => {
     return {
       isNoQuotesAvailable: Boolean(
@@ -524,7 +525,7 @@ export const getValidationErrors = createDeepEqualSelector(
       },
       // Shown after fetching quotes
       isInsufficientGasForQuote: (balance?: BigNumber) => {
-        if (balance && activeQuote && fromToken) {
+        if (balance && activeQuote && fromToken && fromTokenInputValue) {
           return isNativeAddress(fromToken.address)
             ? balance
                 .sub(activeQuote.totalNetworkFee.amount)

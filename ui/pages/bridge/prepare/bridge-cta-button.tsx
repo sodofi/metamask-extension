@@ -83,28 +83,12 @@ export const BridgeCTAButton = () => {
       return '';
     }
 
-    if ( isNoQuotesAvailable) {
+    if (isInsufficientGasBalance || isNoQuotesAvailable) {
       return '';
     }
 
-    if (isInsufficientBalance) {
+    if (isInsufficientBalance || isInsufficientGasForQuote) {
       return t('alertReasonInsufficientBalance');
-    }
-
-    if (isInsufficientGasForQuote) {
-      return (
-        <Row gap={1}>
-          {t('bridgeValidationInsufficientGasReason')}
-          <Tooltip
-            title={t('bridgeValidationInsufficientGasTitle', [ticker])}
-            position={PopoverPosition.TopEnd}
-            iconName={IconName.Info}
-            isOpen
-          >
-            {t('bridgeValidationInsufficientGasMessage', [ticker])}
-          </Tooltip>
-        </Row>
-      );
     }
 
     if (!fromAmount) {
