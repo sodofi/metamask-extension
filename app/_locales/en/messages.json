@@ -866,6 +866,9 @@
     "message": "Approve $1 for bridge",
     "description": "Used in the transaction display list to describe a transaction that is an approve call on a token that is to be bridged. $1 is the symbol of a token that has been approved."
   },
+  "bridgeApprovalWarning": {
+    "message": "You are allowing access to the specified amount, $1 $2. The contract will not access any additional funds."
+  },
   "bridgeCalculatingAmount": {
     "message": "Calculating..."
   },
@@ -2365,6 +2368,7 @@
   "gotIt": {
     "message": "Got it"
   },
+  "grantExactAccess": { "message": "Grant exact access" },
   "grantedToWithColon": {
     "message": "Granted to:"
   },
@@ -6783,6 +6787,9 @@
   },
   "whatsThis": {
     "message": "What's this?"
+  },
+  "willApproveAmountForBridging": {
+    "message": "This will approve $1 $2 for bridging."
   },
   "withdrawing": {
     "message": "Withdrawing"
