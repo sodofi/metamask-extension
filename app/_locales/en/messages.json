@@ -4508,13 +4508,10 @@
   "quoteRate": {
     "message": "Quote rate"
   },
-  "quotedNetworkFee": { "message": "$1 network fee" },
   "quotedReceiveAmount": {
     "message": "$1 receive amount"
   },
-  "quotedReceivingAmount": {
-    "message": "$1 receiving"
-  },
+  "quotedTotalCost": { "message": "$1 total cost" },
   "rank": {
     "message": "Rank"
   },
