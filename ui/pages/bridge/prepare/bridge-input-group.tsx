@@ -278,19 +278,6 @@ export const BridgeInputGroup = ({
               </ButtonLink>
             )}
         </Text>
-        {isAmountReadOnly && isEstimatedReturnLow && isLowReturnTooltipOpen && (
-          <Tooltip
-            title={t('lowEstimatedReturnTooltipTitle')}
-            position={PopoverPosition.Top}
-            isOpen={isLowReturnTooltipOpen}
-            onClose={() => setIsLowReturnTooltipOpen(false)}
-            triggerElement={<span />}
-          >
-            {t('lowEstimatedReturnTooltipMessage', [
-              BRIDGE_QUOTE_MAX_RETURN_DIFFERENCE_PERCENTAGE * 100,
-            ])}
-          </Tooltip>
-        )}
       </Row>
     </Column>
   );

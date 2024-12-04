@@ -541,7 +541,8 @@ export const getValidationErrors = createDeepEqualSelector(
           : false,
       isEstimatedReturnLow:
         activeQuote?.sentAmount?.valueInCurrency &&
-        activeQuote?.adjustedReturn?.valueInCurrency
+        activeQuote?.adjustedReturn?.valueInCurrency &&
+        fromTokenInputValue
           ? activeQuote.adjustedReturn.valueInCurrency.lt(
               new BigNumber(
                 BRIDGE_QUOTE_MAX_RETURN_DIFFERENCE_PERCENTAGE,
