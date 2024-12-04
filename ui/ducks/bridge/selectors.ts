@@ -503,6 +503,7 @@ export const getValidationErrors = createDeepEqualSelector(
   getBridgeQuotes,
   _getValidatedSrcAmount,
   getFromToken,
+  getFromAmount,
   (
     { activeQuote, quotesLastFetchedMs, isLoading },
     validatedSrcAmount,

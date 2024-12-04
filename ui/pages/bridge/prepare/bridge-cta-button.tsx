@@ -83,8 +83,8 @@ export const BridgeCTAButton = () => {
       return '';
     }
 
-    if (isNoQuotesAvailable) {
-      return t('swapQuotesNotAvailableErrorTitle');
+    if ( isNoQuotesAvailable) {
+      return '';
     }
 
     if (isInsufficientBalance) {

@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classnames from 'classnames';
 import { debounce } from 'lodash';
@@ -29,8 +35,12 @@ import {
   getToTokens,
   getBridgeQuotes,
   getFromAmountInCurrency,
+  getValidationErrors,
+  getBridgeQuotesConfig,
 } from '../../../ducks/bridge/selectors';
 import {
+  BannerAlert,
+  BannerAlertSeverity,
   Box,
   ButtonIcon,
   IconName,
@@ -49,7 +59,10 @@ import {
   TextVariant,
 } from '../../../helpers/constants/design-system';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { TokenBucketPriority } from '../../../../shared/constants/swaps';
+import {
+  SWAPS_CHAINID_DEFAULT_TOKEN_MAP,
+  TokenBucketPriority,
+} from '../../../../shared/constants/swaps';
 import { useTokensWithFiltering } from '../../../hooks/useTokensWithFiltering';
 import { setActiveNetwork } from '../../../store/actions';
 import { hexToDecimal } from '../../../../shared/modules/conversion.utils';
@@ -103,6 +116,20 @@ const PrepareBridgePage = () => {
   const quoteRequest = useSelector(getQuoteRequest);
   const { isLoading, activeQuote, isQuoteGoingToRefresh } =
     useSelector(getBridgeQuotes);
+
+  const { refreshRate } = useSelector(getBridgeQuotesConfig);
+
+  const ticker = useSelector(getNativeCurrency);
+  const { isNoQuotesAvailable, isInsufficientGasForQuote } =
+    useSelector(getValidationErrors);
+  const { openBuyCryptoInPdapp } = useRamps();
+
+  const { balanceAmount: nativeAssetBalance } = useLatestBalance(
+    SWAPS_CHAINID_DEFAULT_TOKEN_MAP[
+      fromChain?.chainId as keyof typeof SWAPS_CHAINID_DEFAULT_TOKEN_MAP
+    ],
+    fromChain?.chainId,
+  );
 
   const fromTokenListGenerator = useTokensWithFiltering(
     fromTokens,
@@ -474,6 +501,15 @@ const PrepareBridgePage = () => {
             </Footer>
           </Column>
         </Row>
+        {isNoQuotesAvailable && (
+          <BannerAlert
+            marginInline={4}
+            marginBottom={10}
+            severity={BannerAlertSeverity.Danger}
+            description={t('noOptionsAvailableMessage')}
+            textAlign={TextAlign.Left}
+          />
+        )}
       </Column>
     </Column>
   );

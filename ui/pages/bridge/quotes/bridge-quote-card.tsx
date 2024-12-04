@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
-  BannerAlert,
-  BannerAlertSeverity,
   Text,
   PopoverPosition,
   IconName,
@@ -14,7 +12,6 @@ import {
 } from '../../../components/component-library';
 import {
   getBridgeQuotes,
-  getValidationErrors,
   getFromChain,
   getToChain,
 } from '../../../ducks/bridge/selectors';
@@ -50,28 +47,14 @@ import { BridgeQuotesModal } from './bridge-quotes-modal';
 
 export const BridgeQuoteCard = () => {
   const t = useI18nContext();
-  const { isLoading, isQuoteGoingToRefresh, activeQuote } =
-    useSelector(getBridgeQuotes);
+  const { activeQuote } = useSelector(getBridgeQuotes);
   const currency = useSelector(getCurrentCurrency);
   const ticker = useSelector(getNativeCurrency);
-  const { isNoQuotesAvailable, isInsufficientGasBalance } =
-    useSelector(getValidationErrors);
-
-  const currentChainId = useSelector(getCurrentChainId);
-
-  const secondsUntilNextRefresh = useCountdownTimer();
-  const { balanceAmount: nativeAssetBalance } = useLatestBalance(
-    SWAPS_CHAINID_DEFAULT_TOKEN_MAP[
-      currentChainId as keyof typeof SWAPS_CHAINID_DEFAULT_TOKEN_MAP
-    ],
-    currentChainId,
-  );
 
   const trackCrossChainSwapsEvent = useCrossChainSwapsEventTracker();
   const { quoteRequestProperties } = useRequestProperties();
   const requestMetadataProperties = useRequestMetadataProperties();
   const quoteListProperties = useQuoteProperties();
-  const { openBuyCryptoInPdapp } = useRamps();
 
   const fromChain = useSelector(getFromChain);
   const toChain = useSelector(getToChain);
@@ -251,24 +234,6 @@ export const BridgeQuoteCard = () => {
           </Column>
         </Column>
       ) : null}
-      {isNoQuotesAvailable && (
-        <BannerAlert
-          title={t('noOptionsAvailable')}
-          severity={BannerAlertSeverity.Danger}
-          description={t('noOptionsAvailableMessage')}
-          textAlign={TextAlign.Left}
-        />
-      )}
-      {!isLoading && isInsufficientGasBalance(nativeAssetBalance) && (
-        <BannerAlert
-          title={t('bridgeValidationInsufficientGasTitle', [ticker])}
-          severity={BannerAlertSeverity.Warning}
-          description={t('bridgeValidationInsufficientGasMessage', [ticker])}
-          textAlign={TextAlign.Left}
-          actionButtonLabel={t('buyMoreAsset', [ticker])}
-          actionButtonOnClick={() => openBuyCryptoInPdapp()}
-        />
-      )}
     </>
   );
 };
