@@ -20,14 +20,12 @@ import {
   getFromChains,
   getFromToken,
   getFromTokens,
-  getFromTopAssets,
   getQuoteRequest,
   getSlippage,
   getToChain,
   getToChains,
   getToToken,
   getToTokens,
-  getToTopAssets,
   getBridgeQuotes,
   getFromAmountInCurrency,
 } from '../../../ducks/bridge/selectors';
@@ -75,12 +73,18 @@ const PrepareBridgePage = () => {
   const t = useI18nContext();
 
   const fromToken = useSelector(getFromToken);
-  const fromTokens = useSelector(getFromTokens);
-  const fromTopAssets = useSelector(getFromTopAssets);
+  const {
+    fromTokens,
+    fromTopAssets,
+    isLoading: isFromTokensLoading,
+  } = useSelector(getFromTokens);
 
   const toToken = useSelector(getToToken);
-  const toTokens = useSelector(getToTokens);
-  const toTopAssets = useSelector(getToTopAssets);
+  const {
+    toTokens,
+    toTopAssets,
+    isLoading: isToTokensLoading,
+  } = useSelector(getToTokens);
 
   const fromChains = useSelector(getFromChains);
   const toChains = useSelector(getToChains);
@@ -280,6 +284,7 @@ const PrepareBridgePage = () => {
             autoFocus: true,
             value: fromAmount || undefined,
           }}
+          isTokenListLoading={isFromTokensLoading}
         />
 
         <Box
@@ -367,6 +372,7 @@ const PrepareBridgePage = () => {
               ? 'amount-input defined'
               : 'amount-input',
           }}
+          isTokenListLoading={isToTokensLoading}
         />
       </Column>
 

@@ -76,6 +76,7 @@ export const BridgeInputGroup = ({
   onAssetChange,
   onAmountChange,
   networkProps,
+  isTokenListLoading,
   customTokenListGenerator,
   amountFieldProps,
   amountInFiat,
@@ -92,7 +93,11 @@ export const BridgeInputGroup = ({
   onMaxButtonClick?: (value: string) => void;
 } & Pick<
   React.ComponentProps<typeof AssetPicker>,
-  'networkProps' | 'header' | 'customTokenListGenerator' | 'onAssetChange'
+  | 'networkProps'
+  | 'header'
+  | 'customTokenListGenerator'
+  | 'onAssetChange'
+  | 'isTokenListLoading'
 >) => {
   const t = useI18nContext();
 
@@ -140,6 +145,7 @@ export const BridgeInputGroup = ({
           onAssetChange={onAssetChange}
           networkProps={networkProps}
           customTokenListGenerator={customTokenListGenerator}
+          isTokenListLoading={isTokenListLoading}
         >
           {(onClickHandler, networkImageSrc) => (
             <BridgeAssetPickerButton
