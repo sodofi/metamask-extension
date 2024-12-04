@@ -3761,7 +3761,6 @@
   "on": {
     "message": "On"
   },
-  "onNetwork": { "message": "on $1" },
   "onboardedMetametricsAccept": {
     "message": "I agree"
   },
