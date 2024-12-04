@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Hex } from '@metamask/utils';
 import { useSelector } from 'react-redux';
 import { BigNumber } from 'bignumber.js';
-import { getAccountLink, getTokenTrackerLink } from '@metamask/etherscan-link';
-import { CHAIN_IDS } from '@metamask/transaction-controller';
+import { zeroAddress } from 'ethereumjs-util';
 import { SwapsTokenObject } from '../../../../shared/constants/swaps';
 import {
   Text,
@@ -11,6 +10,8 @@ import {
   TextFieldType,
   ButtonLink,
   PopoverPosition,
+  Button,
+  ButtonSize,
 } from '../../../components/component-library';
 import { AssetPicker } from '../../../components/multichain/asset-picker-amount/asset-picker';
 import { TabName } from '../../../components/multichain/asset-picker-amount/asset-picker-modal/asset-picker-modal-tabs';
@@ -20,18 +21,16 @@ import {
   ERC20Asset,
   NativeAsset,
 } from '../../../components/multichain/asset-picker-amount/asset-picker-modal/types';
-import { formatCurrencyAmount } from '../utils/quote';
+import { formatCurrencyAmount, formatTokenAmount } from '../utils/quote';
 import { Column, Row, Tooltip } from '../layout';
 import {
-  BlockSize,
   Display,
   FontWeight,
   TextAlign,
-  TextVariant,
   TextColor,
+  JustifyContent,
+  TextVariant,
 } from '../../../helpers/constants/design-system';
-import { CHAINID_DEFAULT_BLOCK_EXPLORER_HUMAN_READABLE_URL_MAP } from '../../../../shared/constants/common';
-import { zeroAddress } from '../../../__mocks__/ethereumjs-util';
 import { AssetType } from '../../../../shared/constants/transaction';
 import {
   CHAIN_ID_TO_CURRENCY_SYMBOL_MAP,
@@ -44,6 +43,7 @@ import {
   getBridgeQuotes,
   getValidationErrors,
 } from '../../../ducks/bridge/selectors';
+import { shortenString } from '../../../helpers/utils/util';
 import { BridgeAssetPickerButton } from './components/bridge-asset-picker-button';
 
 const generateAssetFromToken = (
@@ -117,10 +117,7 @@ export const BridgeInputGroup = ({
           networkProps.network.defaultBlockExplorerUrlIndex
         ];
 
-  const { formattedBalance, balanceAmount } = useLatestBalance(
-    token,
-    selectedChainId,
-  );
+  const { balanceAmount } = useLatestBalance(token, selectedChainId);
   const asset =
     selectedChainId && token
       ? generateAssetFromToken(selectedChainId, token)
@@ -141,8 +138,38 @@ export const BridgeInputGroup = ({
     amountFieldProps?.readOnly || amountFieldProps?.disabled;
 
   return (
-    <Column paddingInline={4} gap={1}>
+    <Column paddingInline={6} gap={1}>
       <Row gap={4}>
+        <TextField
+          style={{
+            minWidth: 96,
+            maxWidth: 190,
+            opacity:
+              isAmountReadOnly && amountFieldProps?.value ? 1 : undefined,
+          }}
+          display={Display.Flex}
+          inputRef={inputRef}
+          type={TextFieldType.Text}
+          className="amount-input"
+          placeholder={'0'}
+          onKeyPress={(e?: React.KeyboardEvent<HTMLDivElement>) => {
+            // Only allow numbers and at most one decimal point
+            if (
+              e &&
+              !/^[0-9]*\.{0,1}[0-9]*$/u.test(
+                `${amountFieldProps.value ?? ''}${e.key}`,
+              )
+            ) {
+              e.preventDefault();
+            }
+          }}
+          onChange={(e) => {
+            // Remove characters that are not numbers or decimal points if rendering a controlled or pasted value
+            const cleanedValue = e.target.value.replace(/[^0-9.]+/gu, '');
+            onAmountChange?.(cleanedValue);
+          }}
+          {...amountFieldProps}
+        />
         <AssetPicker
           header={header}
           visibleTabs={[TabName.TOKENS]}
@@ -152,130 +179,99 @@ export const BridgeInputGroup = ({
           customTokenListGenerator={customTokenListGenerator}
           isTokenListLoading={isTokenListLoading}
         >
-          {(onClickHandler, networkImageSrc) => (
-            <BridgeAssetPickerButton
-              onClick={onClickHandler}
-              networkImageSrc={networkImageSrc}
-              asset={asset}
-              networkProps={networkProps}
-            />
-          )}
-        </AssetPicker>
-
-        <Column
-          style={{ width: 96 }}
-          display={
-            isAmountReadOnly &&
-            amountFieldProps.value === undefined &&
-            !isLoading
-              ? Display.None
-              : Display.Flex
+          {(onClickHandler, networkImageSrc) =>
+            isAmountReadOnly && !asset ? (
+              <Button
+                onClick={onClickHandler}
+                size={ButtonSize.Lg}
+                paddingLeft={6}
+                paddingRight={6}
+                fontWeight={FontWeight.Normal}
+                style={{ whiteSpace: 'nowrap' }}
+              >
+                {t('bridgeTo')}
+              </Button>
+            ) : (
+              <BridgeAssetPickerButton
+                onClick={onClickHandler}
+                networkImageSrc={networkImageSrc}
+                asset={asset}
+                networkProps={networkProps}
+              />
+            )
           }
-        >
-          <TextField
-            inputRef={inputRef}
-            type={TextFieldType.Text}
-            className="amount-input"
-            placeholder={
-              isLoading && isAmountReadOnly ? t('bridgeCalculatingAmount') : '0'
-            }
-            onKeyPress={(e?: React.KeyboardEvent<HTMLDivElement>) => {
-              // Only allow numbers and at most one decimal point
-              if (
-                e &&
-                !/^[0-9]*\.{0,1}[0-9]*$/u.test(
-                  `${amountFieldProps.value ?? ''}${e.key}`,
-                )
-              ) {
-                e.preventDefault();
-              }
-            }}
-            onChange={(e) => {
-              // Remove characters that are not numbers or decimal points if rendering a controlled or pasted value
-              const cleanedValue = e.target.value.replace(/[^0-9.]+/gu, '');
-              onAmountChange?.(cleanedValue);
-            }}
-            endAccessory={
-              (token?.symbol?.length ?? 0) > 4 ||
-              (isAmountReadOnly &&
-                amountFieldProps.value === undefined) ? undefined : (
-                <Text
-                  style={{ maxWidth: 'fit-content' }}
-                  width={BlockSize.Full}
-                  fontWeight={FontWeight.Medium}
-                  ellipsis
-                >
-                  {token?.symbol}
-                </Text>
-              )
-            }
-            {...amountFieldProps}
-          />
+        </AssetPicker>
+      </Row>
+
+      <Row justifyContent={JustifyContent.spaceBetween}>
+        <Row>
+          {isAmountReadOnly &&
+            isEstimatedReturnLow &&
+            isLowReturnTooltipOpen && (
+              <Tooltip
+                title={t('lowEstimatedReturnTooltipTitle')}
+                position={PopoverPosition.TopStart}
+                isOpen={isLowReturnTooltipOpen}
+                onClose={() => setIsLowReturnTooltipOpen(false)}
+                triggerElement={<span />}
+                flip={false}
+                offset={[0, 80]}
+              >
+                {t('lowEstimatedReturnTooltipMessage', [
+                  BRIDGE_QUOTE_MAX_RETURN_DIFFERENCE_PERCENTAGE * 100,
+                ])}
+              </Tooltip>
+            )}
           <Text
             variant={TextVariant.bodyMd}
             fontWeight={FontWeight.Normal}
-            color={TextColor.textAlternative}
+            color={
+              isAmountReadOnly && isEstimatedReturnLow
+                ? TextColor.warningDefault
+                : TextColor.textAlternativeSoft
+            }
             textAlign={TextAlign.End}
             ellipsis
           >
-            {amountInFiat && formatCurrencyAmount(amountInFiat, currency)}
+            {isAmountReadOnly && isLoading && amountFieldProps.value === '0'
+              ? t('bridgeCalculatingAmount')
+              : undefined}
+            {amountInFiat && formatCurrencyAmount(amountInFiat, currency, 2)}
           </Text>
-        </Column>
-      </Row>
+        </Row>
 
-      <Row>
         <Text
           display={Display.Flex}
-          gap={2}
-          variant={TextVariant.bodySm}
+          gap={1}
+          variant={TextVariant.bodyMd}
           color={
             !isAmountReadOnly && isInsufficientBalance(balanceAmount)
               ? TextColor.errorDefault
-              : TextColor.textAlternative
+              : TextColor.textAlternativeSoft
           }
-          style={{ height: 20 }}
         >
           {isAmountReadOnly &&
           token?.aggregators &&
+          asset &&
           selectedChainId &&
-          blockExplorerUrl
-            ? t('swapTokenVerifiedSources', [
-                token.aggregators.length,
-                <ButtonLink
-                  key="confirmedBySources"
-                  externalLink
-                  variant={TextVariant.bodySm}
-                  style={{ display: 'contents' }}
-                  href={
-                    // Use getAccountLink because zksync explorer uses a /address URL scheme instead of /token
-                    selectedChainId === CHAIN_IDS.ZKSYNC_ERA
-                      ? getAccountLink(token.address, selectedChainId, {
-                          blockExplorerUrl,
-                        })
-                      : getTokenTrackerLink(
-                          token.address,
-                          selectedChainId,
-                          '',
-                          '',
-                          { blockExplorerUrl },
-                        )
-                  }
-                >
-                  {CHAINID_DEFAULT_BLOCK_EXPLORER_HUMAN_READABLE_URL_MAP[
-                    selectedChainId
-                  ] ?? t('etherscan')}
-                </ButtonLink>,
-              ])
+          blockExplorerUrl &&
+          asset.type === AssetType.token
+            ? shortenString(asset.address, {
+                truncatedCharLimit: 11,
+                truncatedStartChars: 4,
+                truncatedEndChars: 4,
+                skipCharacterInEnd: false,
+              })
             : undefined}
-          {!isAmountReadOnly && formattedBalance
-            ? t('available', [formattedBalance, token?.symbol])
+          {!isAmountReadOnly && balanceAmount
+            ? formatTokenAmount(balanceAmount, token?.symbol)
             : undefined}
           {onMaxButtonClick &&
             asset &&
             asset.type !== AssetType.native &&
             balanceAmount && (
               <ButtonLink
-                variant={TextVariant.bodySm}
+                variant={TextVariant.bodyMd}
                 onClick={() => onMaxButtonClick(balanceAmount?.toString())}
               >
                 {t('max')}
