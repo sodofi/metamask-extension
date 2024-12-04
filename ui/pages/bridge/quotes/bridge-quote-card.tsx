@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Text, PopoverPosition } from '../../../components/component-library';
-import { getBridgeQuotes } from '../../../ducks/bridge/selectors';
+import {
+  BannerAlert,
+  BannerAlertSeverity,
+  Text,
+  PopoverPosition,
+} from '../../../components/component-library';
+import {
+  getBridgeQuotes,
+  getValidationErrors,
+} from '../../../ducks/bridge/selectors';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import {
   formatCurrencyAmount,
@@ -34,6 +42,7 @@ export const BridgeQuoteCard = () => {
     useSelector(getBridgeQuotes);
   const currency = useSelector(getCurrentCurrency);
   const ticker = useSelector(getNativeCurrency);
+  const { isNoQuotesAvailable } = useSelector(getValidationErrors);
 
   const secondsUntilNextRefresh = useCountdownTimer();
 
@@ -150,6 +159,14 @@ export const BridgeQuoteCard = () => {
           </Column>
         </Column>
       ) : null}
+      {isNoQuotesAvailable && (
+        <BannerAlert
+          title={t('noOptionsAvailable')}
+          severity={BannerAlertSeverity.Danger}
+          description={t('noOptionsAvailableMessage')}
+          textAlign={TextAlign.Left}
+        />
+      )}
     </>
   );
 };
