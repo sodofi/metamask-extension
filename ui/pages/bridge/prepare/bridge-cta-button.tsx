@@ -3,9 +3,7 @@ import { useSelector } from 'react-redux';
 import {
   ButtonPrimary,
   ButtonPrimarySize,
-  Icon,
-  IconName,
-  PopoverPosition,
+  Text,
 } from '../../../components/component-library';
 import {
   getFromAmount,
@@ -17,6 +15,12 @@ import {
 } from '../../../ducks/bridge/selectors';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import useSubmitBridgeTransaction from '../hooks/useSubmitBridgeTransaction';
+import {
+  BlockSize,
+  TextAlign,
+  TextColor,
+  TextVariant,
+} from '../../../helpers/constants/design-system';
 import useLatestBalance from '../../../hooks/bridge/useLatestBalance';
 import { useIsTxSubmittable } from '../../../hooks/bridge/useIsTxSubmittable';
 import { useCrossChainSwapsEventTracker } from '../../../hooks/bridge/useCrossChainSwapsEventTracker';
@@ -24,12 +28,7 @@ import { useRequestProperties } from '../../../hooks/bridge/events/useRequestPro
 import { useRequestMetadataProperties } from '../../../hooks/bridge/events/useRequestMetadataProperties';
 import { useTradeProperties } from '../../../hooks/bridge/events/useTradeProperties';
 import { MetaMetricsEventName } from '../../../../shared/constants/metametrics';
-import {
-  BlockSize,
-  TextVariant,
-} from '../../../helpers/constants/design-system';
 import { SWAPS_CHAINID_DEFAULT_TOKEN_MAP } from '../../../../shared/constants/swaps';
-import { Row, Tooltip } from '../layout';
 import { getNativeCurrency } from '../../../ducks/metamask/metamask';
 
 export const BridgeCTAButton = () => {
@@ -81,7 +80,7 @@ export const BridgeCTAButton = () => {
 
   const label = useMemo(() => {
     if (isLoading && !isTxSubmittable) {
-      return t('swapFetchingQuotes');
+      return '';
     }
 
     if (isNoQuotesAvailable) {
@@ -116,7 +115,7 @@ export const BridgeCTAButton = () => {
     }
 
     if (isTxSubmittable) {
-      return t('confirm');
+      return t('submit');
     }
 
     return t('swapSelectToken');
@@ -132,7 +131,7 @@ export const BridgeCTAButton = () => {
     isInsufficientGasForQuote,
   ]);
 
-  return (
+  return activeQuote ? (
     <ButtonPrimary
       width={BlockSize.Full}
       size={activeQuote ? ButtonPrimarySize.Md : ButtonPrimarySize.Lg}
@@ -159,5 +158,14 @@ export const BridgeCTAButton = () => {
     >
       {label}
     </ButtonPrimary>
+  ) : (
+    <Text
+      variant={TextVariant.bodyMd}
+      width={BlockSize.Full}
+      textAlign={TextAlign.Center}
+      color={TextColor.textAlternativeSoft}
+    >
+      {label}
+    </Text>
   );
 };

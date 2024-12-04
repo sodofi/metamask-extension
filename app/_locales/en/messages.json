@@ -6849,6 +6849,9 @@
   "yourNFTmayBeAtRisk": {
     "message": "Your NFT may be at risk"
   },
+  "yourNetworks": {
+    "message": "Your networks"
+  },
   "yourPrivateSeedPhrase": {
     "message": "Your Secret Recovery Phrase"
   },
