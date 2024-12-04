@@ -129,7 +129,7 @@ export const BridgeQuoteCard = () => {
                 activeQuote.quote.destAsset.symbol,
               )}`}</Text>
             </Row>
-            {/* TODO add tooltip on hover */}
+
             <Row>
               <Text color={TextColor.textAlternative}>{t('networkFee')}</Text>
               <Row gap={1}>

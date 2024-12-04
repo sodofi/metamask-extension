@@ -17,11 +17,7 @@ import {
   IconName,
 } from '../../components/component-library';
 import { getProviderConfig } from '../../../shared/modules/selectors/networks';
-import {
-  getCurrentCurrency,
-  getIsBridgeChain,
-  getIsBridgeEnabled,
-} from '../../selectors';
+import { getIsBridgeChain, getIsBridgeEnabled } from '../../selectors';
 import useBridging from '../../hooks/bridge/useBridging';
 import { Content, Header, Page } from '../../components/multichain/pages/page';
 import { useSwapsFeatureFlags } from '../swaps/hooks/useSwapsFeatureFlags';
@@ -46,13 +42,12 @@ const CrossChainSwap = () => {
   const isBridgeEnabled = useSelector(getIsBridgeEnabled);
   const providerConfig = useSelector(getProviderConfig);
   const isBridgeChain = useSelector(getIsBridgeChain);
-  const currency = useSelector(getCurrentCurrency);
 
   useEffect(() => {
     if (isBridgeChain && isBridgeEnabled && providerConfig) {
       dispatch(setFromChain(providerConfig.chainId));
     }
-  }, [isBridgeChain, isBridgeEnabled, providerConfig, currency]);
+  }, [isBridgeChain, isBridgeEnabled, providerConfig]);
 
   const resetControllerAndInputStates = async () => {
     await dispatch(resetBridgeState());
