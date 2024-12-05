@@ -16,8 +16,9 @@ export const validateResponse = <ExpectedResponse>(
   validators: Validator<ExpectedResponse>[],
   data: unknown,
   urlUsed: string,
+  logError = true,
 ): data is ExpectedResponse => {
-  return validateData(validators, data, urlUsed);
+  return validateData(validators, data, urlUsed, logError);
 };
 
 export const isValidNumber = (v: unknown): v is number => typeof v === 'number';

@@ -13,10 +13,7 @@ import {
   getTokenExchangeRates,
 } from '../selectors';
 import { getConversionRate } from '../ducks/metamask/metamask';
-import {
-  SwapsTokenObject,
-  TokenBucketPriority,
-} from '../../shared/constants/swaps';
+import { SwapsTokenObject } from '../../shared/constants/swaps';
 import {
   AssetWithDisplayData,
   ERC20Asset,
@@ -30,14 +27,19 @@ import { getCurrentChainId } from '../../shared/modules/selectors/networks';
 import { useTokenTracker } from './useTokenTracker';
 import { useMultichainBalances } from './useMultichainBalances';
 
-/*
+/**
  * Returns a token list generator that filters and sorts tokens based on
  * query match, balance/popularity, all other tokens
+ *
+ * @param tokenList - a mapping of token addresses in the selected chainId to token metadata from the bridge-api
+ * @param topTokens - a list of top tokens from the swap-api
+ * @param tokenAddressAllowlistByChainId - a mapping of all supported chainIds to a Set of allowed token addresses
+ * @param chainId - the selected src/dest chainId
  */
 export const useTokensWithFiltering = (
   tokenList: Record<string, SwapsTokenObject>,
   topTokens: { address: string }[],
-  sortOrder: TokenBucketPriority = TokenBucketPriority.owned,
+  tokenAddressAllowlistByChainId: Record<string, Set<string>>,
   chainId?: ChainId | Hex,
 ) => {
   const { token: tokenAddressFromUrl } = useParams();
@@ -139,8 +141,11 @@ export const useTokensWithFiltering = (
           }
         }
 
-        const isTokenBlocked = (_token) => false; // TODO
-        // Yield multichain tokens with balances
+        const isTokenBlocked = (tokenAddress: string, tokenChainId: string) =>
+          !tokenAddressAllowlistByChainId[tokenChainId]?.has(
+            tokenAddress.toLowerCase(),
+          );
+        // Yield multichain tokens with balances and are not blocked
         for (const token of multichainTokensWithBalance) {
           if (
             shouldAddToken(
@@ -148,7 +153,9 @@ export const useTokensWithFiltering = (
               token.address ?? undefined,
               token.chainId,
             ) &&
-            (!isTokenBlocked(token) || !token.address)
+            (token.address
+              ? !isTokenBlocked(token.address, token.chainId)
+              : true)
           ) {
             yield { ...token, address: token.address || zeroAddress() };
           }

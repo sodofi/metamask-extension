@@ -84,6 +84,7 @@ import useRamps from '../../../hooks/ramps/useRamps/useRamps';
 import { getNativeCurrency } from '../../../ducks/metamask/metamask';
 import useLatestBalance from '../../../hooks/bridge/useLatestBalance';
 import { useCountdownTimer } from '../../../hooks/bridge/useCountdownTimer';
+import { useBridgeTokens } from '../../../hooks/bridge/useBridgeTokens';
 import { BridgeInputGroup } from './bridge-input-group';
 import { BridgeCTAButton } from './bridge-cta-button';
 
@@ -135,16 +136,17 @@ const PrepareBridgePage = () => {
     fromChain?.chainId,
   );
 
+  const tokenAddressAllowlistByChainId = useBridgeTokens();
   const fromTokenListGenerator = useTokensWithFiltering(
     fromTokens,
     fromTopAssets,
-    TokenBucketPriority.owned,
+    tokenAddressAllowlistByChainId,
     fromChain?.chainId,
   );
   const toTokenListGenerator = useTokensWithFiltering(
     toTokens,
     toTopAssets,
-    TokenBucketPriority.top,
+    tokenAddressAllowlistByChainId,
     toChain?.chainId,
   );
 

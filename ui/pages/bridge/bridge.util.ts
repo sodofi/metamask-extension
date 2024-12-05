@@ -131,6 +131,7 @@ export async function fetchBridgeTokens(
         TOKEN_VALIDATORS.concat(TOKEN_AGGREGATOR_VALIDATORS),
         token,
         url,
+        false, // Don't log errors for tokens
       ) &&
       !(
         isSwapsDefaultTokenSymbol(token.symbol, chainId) ||
