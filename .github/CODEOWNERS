@@ -52,12 +52,64 @@ privacy-snapshot.json                @MetaMask/extension-privacy-reviewers
 .devcontainer/                       @MetaMask/extension-security-team @HowardBraham
 
 # Confirmations team to own code for confirmations on UI.
-app/scripts/lib/ppom                    @MetaMask/confirmations
-app/scripts/lib/signature               @MetaMask/confirmations
-app/scripts/lib/transaction/decode      @MetaMask/confirmations
-app/scripts/lib/transaction/metrics.*   @MetaMask/confirmations
-app/scripts/lib/transaction/util.*      @MetaMask/confirmations
-ui/pages/confirmations                  @MetaMask/confirmations
+app/scripts/constants/sentry-state.ts                @MetaMask/confirmations @MetaMask/extension-platform
+app/scripts/controllers/decrypt-message*             @MetaMask/confirmations
+app/scripts/controllers/encryption-publick-key*      @MetaMask/confirmations
+app/scripts/fixtures/with-confirmed-transactions.js  @MetaMask/confirmations
+app/scripts/lib/middleware/pending*                  @MetaMask/confirmations
+app/scripts/lib/ppom                                 @MetaMask/confirmations
+app/scripts/lib/signature                            @MetaMask/confirmations
+app/scripts/lib/transaction/decode*                  @MetaMask/confirmations
+app/scripts/lib/transaction/metrics.*                @MetaMask/confirmations
+app/scripts/lib/transaction/util.*                   @MetaMask/confirmations
+app/scripts/lib/AbstractPetnamesBridge*              @MetaMask/confirmations
+app/scripts/lib/AccountIdentitiesPetnamesBridge*     @MetaMask/confirmations
+app/scripts/lib/AddressBookPetnamesBridge*           @MetaMask/confirmations
+app/scripts/lib/createMetamaskMiddleware*            @MetaMask/confirmations @MetaMask/extension-platform
+app/scripts/lib/createRPCMethodTrackingMiddleware*   @MetaMask/confirmations @MetaMask/extension-platform
+app/scripts/lib/createTracingMiddleware*             @MetaMask/confirmations @MetaMask/extension-platform
+app/scripts/lib/SnapsNameProvider*                   @MetaMask/confirmations
+shared/constants/app.ts                              @MetaMask/confirmations @MetaMask/extension-platform
+shared/constants/gas.ts                              @MetaMask/confirmations
+shared/constants/security-provider.ts                @MetaMask/confirmations
+shared/constants/signatures.ts                       @MetaMask/confirmations
+shared/constants/transaction.ts                      @MetaMask/confirmations
+shared/lib/confirmation-utils*                       @MetaMask/confirmations
+shared/lib/four-byte*                                @MetaMask/confirmations
+shared/lib/transactions-controller-utils*            @MetaMask/confirmations
+shared/modules/gas.utils*                            @MetaMask/confirmations
+shared/modules/security-provider*                    @MetaMask/confirmations
+shared/modules/transaction.utils*                    @MetaMask/confirmations
+shared/modules/updateTxData*                         @MetaMask/confirmations
+shared/types/confirm.ts                              @MetaMask/confirmations
+shared/types/transaction-decode.ts                   @MetaMask/confirmations
+test/data/confirmations                              @MetaMask/confirmations
+test/data/mock-pending-transaction-data.js           @MetaMask/confirmations
+test/data/mock-send-state.json                       @MetaMask/confirmations @MetaMask/extension-platform
+test/data/transaction-data.json                      @MetaMask/confirmations
+test/e2e/flask/user-operations*                      @MetaMask/confirmations
+test/e2e/json-rpc/switchEthereumChain.spec.js        @MetaMask/confirmations
+test/e2e/mock-cdn*                                   @MetaMask/confirmations
+test/e2e/page-objects/flows/send-transaction.flow.ts @MetaMask/confirmations
+test/e2e/page-objects/flows/sign.flow.ts             @MetaMask/confirmations
+test/e2e/page-objects/flows/transaction.ts           @MetaMask/confirmations
+test/e2e/page-objects/pages/confirmations            @MetaMask/confirmations
+test/e2e/page-objects/pages/dialog/confirm-alert.ts  @MetaMask/confirmations
+test/e2e/page-objects/pages/send                     @MetaMask/confirmations @MetaMask/extension-platform
+test/e2e/tests/confirmations                         @MetaMask/confirmations
+test/e2e/tests/petnames                              @MetaMask/confirmations
+test/e2e/tests/ppom                                  @MetaMask/confirmations
+test/e2e/tests/signature                             @MetaMask/confirmations
+test/e2e/tests/simulation-details                    @MetaMask/confirmations
+test/e2e/tests/transaction                           @MetaMask/confirmations
+test/e2e/bundler*                                    @MetaMask/confirmations
+test/integration/config                              @MetaMask/confirmations @MetaMask/extension-platform
+test/integration/confirmations                       @MetaMask/confirmations
+test/integration/data                                @MetaMask/confirmations @MetaMask/extension-platform
+test/integration/helpers.tsx                         @MetaMask/confirmations @MetaMask/extension-platform
+test/lib/confirmations                               @MetaMask/confirmations
+
+ui/pages/confirmations                               @MetaMask/confirmations
 
 # MMI team is responsible for code related with Institutioanl version of MetaMask
 ui/pages/institutional               @MetaMask/mmi
