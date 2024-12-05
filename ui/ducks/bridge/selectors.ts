@@ -54,6 +54,7 @@ import {
   isNativeAddress,
 } from '../../pages/bridge/utils/quote';
 import { decGWEIToHexWEI } from '../../../shared/modules/conversion.utils';
+import { AssetType } from '../../../shared/constants/transaction';
 import {
   exchangeRatesFromNativeAndCurrencyRates,
   exchangeRateFromMarketData,
@@ -162,15 +163,23 @@ export const getToTokens = createDeepEqualSelector(
 export const getFromToken = createSelector(
   (state: BridgeAppState) => state.bridge.fromToken,
   getFromChain,
-  (fromToken, fromChain): BridgeToken | null => {
+  (fromToken, fromChain) => {
     if (!fromChain?.chainId) {
       return null;
     }
     return fromToken?.address
       ? fromToken
-      : SWAPS_CHAINID_DEFAULT_TOKEN_MAP[
-          fromChain.chainId as keyof typeof SWAPS_CHAINID_DEFAULT_TOKEN_MAP
-        ];
+      : {
+          ...SWAPS_CHAINID_DEFAULT_TOKEN_MAP[
+            fromChain.chainId as keyof typeof SWAPS_CHAINID_DEFAULT_TOKEN_MAP
+          ],
+          chainId: fromChain.chainId,
+          image:
+            SWAPS_CHAINID_DEFAULT_TOKEN_MAP[
+              fromChain.chainId as keyof typeof SWAPS_CHAINID_DEFAULT_TOKEN_MAP
+            ].iconUrl,
+          type: AssetType.native,
+        };
   },
 );
 

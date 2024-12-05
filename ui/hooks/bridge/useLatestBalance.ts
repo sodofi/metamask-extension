@@ -2,11 +2,12 @@ import { useSelector } from 'react-redux';
 import { Hex } from '@metamask/utils';
 import { Numeric } from '../../../shared/modules/Numeric';
 import { getCurrentChainId } from '../../../shared/modules/selectors/networks';
-import { getSelectedInternalAccount, SwapsEthToken } from '../../selectors';
-import { SwapsTokenObject } from '../../../shared/constants/swaps';
+import { getSelectedInternalAccount } from '../../selectors';
 import { calcLatestSrcBalance } from '../../../shared/modules/bridge-utils/balance';
 import { useAsyncResult } from '../useAsyncResult';
 import { calcTokenAmount } from '../../../shared/lib/transactions-controller-utils';
+import { BridgeToken } from '../../pages/bridge/types';
+import { SwapsTokenObject } from '../../../shared/constants/swaps';
 
 /**
  * Custom hook to fetch and format the latest balance of a given token or native asset.
@@ -16,7 +17,7 @@ import { calcTokenAmount } from '../../../shared/lib/transactions-controller-uti
  * @returns An object containing the formatted balance as a string.
  */
 const useLatestBalance = (
-  token: SwapsTokenObject | SwapsEthToken | null,
+  token: BridgeToken | SwapsTokenObject,
   chainId?: Hex,
 ) => {
   const { address: selectedAddress } = useSelector(getSelectedInternalAccount);

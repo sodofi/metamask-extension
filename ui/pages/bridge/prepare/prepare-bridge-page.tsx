@@ -315,6 +315,7 @@ const PrepareBridgePage = () => {
           },
           header: t('yourNetworks'),
         }}
+        isMultiselectEnabled
         customTokenListGenerator={
           fromTokens && fromTopAssets ? fromTokenListGenerator : undefined
         }

@@ -1,9 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { isEqual } from 'lodash';
-import { ChainId, hexToBN } from '@metamask/controller-utils';
+import { ChainId } from '@metamask/controller-utils';
 import { Hex } from '@metamask/utils';
 import { useParams } from 'react-router-dom';
+import { zeroAddress } from 'ethereumjs-util';
 import {
   getAllTokens,
   getCurrentCurrency,
@@ -13,12 +14,9 @@ import {
 } from '../selectors';
 import { getConversionRate } from '../ducks/metamask/metamask';
 import {
-  SWAPS_CHAINID_DEFAULT_TOKEN_MAP,
   SwapsTokenObject,
   TokenBucketPriority,
 } from '../../shared/constants/swaps';
-import { getValueFromWeiHex } from '../../shared/modules/conversion.utils';
-import { EtherDenomination } from '../../shared/constants/common';
 import {
   AssetWithDisplayData,
   ERC20Asset,
@@ -26,9 +24,11 @@ import {
   TokenWithBalance,
 } from '../components/multichain/asset-picker-amount/asset-picker-modal/types';
 import { AssetType } from '../../shared/constants/transaction';
-import { isSwapsDefaultTokenSymbol } from '../../shared/modules/swaps.utils';
+import { isNativeAddress } from '../pages/bridge/utils/quote';
+import { CHAIN_ID_TOKEN_IMAGE_MAP } from '../../shared/constants/network';
+import { getCurrentChainId } from '../../shared/modules/selectors/networks';
 import { useTokenTracker } from './useTokenTracker';
-import { getRenderableTokenData } from './useTokensToSearch';
+import { useMultichainBalances } from './useMultichainBalances';
 
 /*
  * Returns a token list generator that filters and sorts tokens based on
@@ -65,6 +65,7 @@ export const useTokensWithFiltering = (
   const tokenConversionRates = useSelector(getTokenExchangeRates, isEqual);
   const conversionRate = useSelector(getConversionRate);
   const currentCurrency = useSelector(getCurrentCurrency);
+  const currentChainId = useSelector(getCurrentChainId);
 
   const sortedErc20TokensWithBalances = useMemo(
     () =>
@@ -74,58 +75,58 @@ export const useTokensWithFiltering = (
     [erc20TokensWithBalances],
   );
 
+  const { assetsWithBalance: multichainTokensWithBalance } =
+    useMultichainBalances();
+
   const filteredTokenListGenerator = useCallback(
-    (shouldAddToken: (symbol: string, address?: string) => boolean) => {
+    (
+      shouldAddToken: (
+        symbol: string,
+        address?: string,
+        tokenChainId?: string,
+      ) => boolean,
+    ) => {
       const buildTokenData = (
         token: SwapsTokenObject,
       ):
         | AssetWithDisplayData<NativeAsset>
         | AssetWithDisplayData<ERC20Asset>
         | undefined => {
-        if (chainId && shouldAddToken(token.symbol, token.address)) {
-          return getRenderableTokenData(
-            {
-              ...token,
-              type: isSwapsDefaultTokenSymbol(token.symbol, chainId)
-                ? AssetType.native
-                : AssetType.token,
-              image: token.iconUrl,
-            },
-            tokenConversionRates,
-            conversionRate,
-            currentCurrency,
-            chainId,
-            tokenList,
-          );
+        if (chainId && shouldAddToken(token.symbol, token.address, chainId)) {
+          // Only tokens on the active chain are shown here
+          const sharedFields = { ...token, chainId };
+
+          if (isNativeAddress(token.address)) {
+            return {
+              ...sharedFields,
+              type: AssetType.native,
+              address: zeroAddress(),
+              image:
+                CHAIN_ID_TOKEN_IMAGE_MAP[
+                  chainId as keyof typeof CHAIN_ID_TOKEN_IMAGE_MAP
+                ],
+              balance: currentChainId === chainId ? balanceOnActiveChain : '',
+              string: currentChainId === chainId ? balanceOnActiveChain : '',
+            };
+          }
+
+          return {
+            ...sharedFields,
+            type: AssetType.token,
+            image: token.iconUrl,
+            // Only tokens with 0 balance are processed here so hardcode empty string
+            balance: '',
+            string: '',
+            address: token.address || zeroAddress(),
+          };
         }
+
         return undefined;
       };
 
       return (function* (): Generator<
         AssetWithDisplayData<NativeAsset> | AssetWithDisplayData<ERC20Asset>
       > {
-        const balance = hexToBN(balanceOnActiveChain);
-        const srcBalanceFields =
-          sortOrder === TokenBucketPriority.owned
-            ? {
-                balance: balanceOnActiveChain,
-                string: getValueFromWeiHex({
-                  value: balance,
-                  numberOfDecimals: 4,
-                  toDenomination: EtherDenomination.ETH,
-                }),
-              }
-            : {};
-        const nativeToken = buildTokenData({
-          ...SWAPS_CHAINID_DEFAULT_TOKEN_MAP[
-            chainId as keyof typeof SWAPS_CHAINID_DEFAULT_TOKEN_MAP
-          ],
-          ...srcBalanceFields,
-        });
-        if (nativeToken) {
-          yield nativeToken;
-        }
-
         if (tokenAddressFromUrl) {
           const tokenListItem =
             tokenList?.[tokenAddressFromUrl] ??
@@ -138,25 +139,22 @@ export const useTokensWithFiltering = (
           }
         }
 
-        if (sortOrder === TokenBucketPriority.owned) {
-          for (const tokenWithBalance of sortedErc20TokensWithBalances) {
-            const cachedTokenData =
-              tokenWithBalance.address &&
-              tokenList &&
-              (tokenList[tokenWithBalance.address] ??
-                tokenList[tokenWithBalance.address.toLowerCase()]);
-            if (cachedTokenData) {
-              const combinedTokenData = buildTokenData({
-                ...tokenWithBalance,
-                ...(cachedTokenData ?? {}),
-              });
-              if (combinedTokenData) {
-                yield combinedTokenData;
-              }
-            }
+        const isTokenBlocked = (_token) => false; // TODO
+        // Yield multichain tokens with balances
+        for (const token of multichainTokensWithBalance) {
+          if (
+            shouldAddToken(
+              token.symbol,
+              token.address ?? undefined,
+              token.chainId,
+            ) &&
+            (!isTokenBlocked(token) || !token.address)
+          ) {
+            yield { ...token, address: token.address || zeroAddress() };
           }
         }
 
+        // Yield topTokens from selected chain
         for (const topToken of topTokens) {
           const tokenListItem =
             tokenList?.[topToken.address] ??
@@ -169,6 +167,7 @@ export const useTokensWithFiltering = (
           }
         }
 
+        // Yield other tokens from selected chain
         for (const token of Object.values(tokenList)) {
           const tokenWithTokenListData = buildTokenData(token);
           if (tokenWithTokenListData) {
@@ -178,7 +177,6 @@ export const useTokensWithFiltering = (
       })();
     },
     [
-      balanceOnActiveChain,
       sortedErc20TokensWithBalances,
       topTokens,
       tokenConversionRates,
@@ -187,6 +185,7 @@ export const useTokensWithFiltering = (
       chainId,
       tokenList,
       tokenAddressFromUrl,
+      multichainTokensWithBalance,
     ],
   );
 

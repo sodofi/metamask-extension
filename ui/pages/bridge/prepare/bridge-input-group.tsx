@@ -1,9 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Hex } from '@metamask/utils';
 import { useSelector } from 'react-redux';
 import { BigNumber } from 'bignumber.js';
-import { zeroAddress } from 'ethereumjs-util';
-import { SwapsTokenObject } from '../../../../shared/constants/swaps';
 import {
   Text,
   TextField,
@@ -16,11 +13,7 @@ import {
 import { AssetPicker } from '../../../components/multichain/asset-picker-amount/asset-picker';
 import { TabName } from '../../../components/multichain/asset-picker-amount/asset-picker-modal/asset-picker-modal-tabs';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { getCurrentCurrency, SwapsEthToken } from '../../../selectors';
-import {
-  ERC20Asset,
-  NativeAsset,
-} from '../../../components/multichain/asset-picker-amount/asset-picker-modal/types';
+import { getCurrentCurrency } from '../../../selectors';
 import { formatCurrencyAmount, formatTokenAmount } from '../utils/quote';
 import { Column, Row, Tooltip } from '../layout';
 import {
@@ -32,10 +25,6 @@ import {
   TextVariant,
 } from '../../../helpers/constants/design-system';
 import { AssetType } from '../../../../shared/constants/transaction';
-import {
-  CHAIN_ID_TO_CURRENCY_SYMBOL_MAP,
-  CHAIN_ID_TOKEN_IMAGE_MAP,
-} from '../../../../shared/constants/network';
 import { BRIDGE_QUOTE_MAX_RETURN_DIFFERENCE_PERCENTAGE } from '../../../../shared/constants/bridge';
 import { BridgeToken } from '../types';
 import useLatestBalance from '../../../hooks/bridge/useLatestBalance';
@@ -45,32 +34,6 @@ import {
 } from '../../../ducks/bridge/selectors';
 import { shortenString } from '../../../helpers/utils/util';
 import { BridgeAssetPickerButton } from './components/bridge-asset-picker-button';
-
-const generateAssetFromToken = (
-  chainId: Hex,
-  tokenDetails: SwapsTokenObject | SwapsEthToken,
-): ERC20Asset | NativeAsset => {
-  if ('iconUrl' in tokenDetails && tokenDetails.address !== zeroAddress()) {
-    return {
-      type: AssetType.token,
-      image: tokenDetails.iconUrl,
-      symbol: tokenDetails.symbol,
-      address: tokenDetails.address,
-    };
-  }
-
-  return {
-    type: AssetType.native,
-    image:
-      CHAIN_ID_TOKEN_IMAGE_MAP[
-        chainId as keyof typeof CHAIN_ID_TOKEN_IMAGE_MAP
-      ],
-    symbol:
-      CHAIN_ID_TO_CURRENCY_SYMBOL_MAP[
-        chainId as keyof typeof CHAIN_ID_TO_CURRENCY_SYMBOL_MAP
-      ],
-  };
-};
 
 export const BridgeInputGroup = ({
   header,
@@ -83,6 +46,7 @@ export const BridgeInputGroup = ({
   amountFieldProps,
   amountInFiat,
   onMaxButtonClick,
+  isMultiselectEnabled,
 }: {
   amountInFiat?: BigNumber;
   onAmountChange?: (value: string) => void;
@@ -91,7 +55,6 @@ export const BridgeInputGroup = ({
     React.ComponentProps<typeof TextField>,
     'testId' | 'autoFocus' | 'value' | 'readOnly' | 'disabled' | 'className'
   >;
-
   onMaxButtonClick?: (value: string) => void;
 } & Pick<
   React.ComponentProps<typeof AssetPicker>,
@@ -100,6 +63,7 @@ export const BridgeInputGroup = ({
   | 'customTokenListGenerator'
   | 'onAssetChange'
   | 'isTokenListLoading'
+  | 'isMultiselectEnabled'
 >) => {
   const t = useI18nContext();
 
@@ -118,10 +82,6 @@ export const BridgeInputGroup = ({
         ];
 
   const { balanceAmount } = useLatestBalance(token, selectedChainId);
-  const asset =
-    selectedChainId && token
-      ? generateAssetFromToken(selectedChainId, token)
-      : undefined;
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -173,14 +133,15 @@ export const BridgeInputGroup = ({
         <AssetPicker
           header={header}
           visibleTabs={[TabName.TOKENS]}
-          asset={asset}
+          asset={token ?? undefined}
           onAssetChange={onAssetChange}
           networkProps={networkProps}
           customTokenListGenerator={customTokenListGenerator}
           isTokenListLoading={isTokenListLoading}
+          isMultiselectEnabled={isMultiselectEnabled}
         >
           {(onClickHandler, networkImageSrc) =>
-            isAmountReadOnly && !asset ? (
+            isAmountReadOnly && !token ? (
               <Button
                 onClick={onClickHandler}
                 size={ButtonSize.Lg}
@@ -195,7 +156,7 @@ export const BridgeInputGroup = ({
               <BridgeAssetPickerButton
                 onClick={onClickHandler}
                 networkImageSrc={networkImageSrc}
-                asset={asset}
+                asset={token ?? undefined}
                 networkProps={networkProps}
               />
             )
@@ -251,12 +212,11 @@ export const BridgeInputGroup = ({
           }
         >
           {isAmountReadOnly &&
-          token?.aggregators &&
-          asset &&
+          token &&
           selectedChainId &&
           blockExplorerUrl &&
-          asset.type === AssetType.token
-            ? shortenString(asset.address, {
+          token.type === AssetType.token
+            ? shortenString(token.address, {
                 truncatedCharLimit: 11,
                 truncatedStartChars: 4,
                 truncatedEndChars: 4,
@@ -267,8 +227,8 @@ export const BridgeInputGroup = ({
             ? formatTokenAmount(balanceAmount, token?.symbol)
             : undefined}
           {onMaxButtonClick &&
-            asset &&
-            asset.type !== AssetType.native &&
+            token &&
+            token.type !== AssetType.native &&
             balanceAmount && (
               <ButtonLink
                 variant={TextVariant.bodyMd}
