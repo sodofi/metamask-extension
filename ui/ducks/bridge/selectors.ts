@@ -286,8 +286,8 @@ export const getToTokenConversionRate = createDeepEqualSelector(
   },
 );
 
-const _getQuotesWithMetadata = createDeepEqualSelector(
-  (state) => state.metamask.bridgeState.quotes,
+const _getQuotesWithMetadata = createSelector(
+  (state: BridgeAppState) => state.metamask.bridgeState.quotes,
   getToTokenConversionRate,
   getFromTokenConversionRate,
   getConversionRate,
@@ -345,7 +345,7 @@ const _getQuotesWithMetadata = createDeepEqualSelector(
   },
 );
 
-const _getSortedQuotesWithMetadata = createDeepEqualSelector(
+const _getSortedQuotesWithMetadata = createSelector(
   _getQuotesWithMetadata,
   getBridgeSortOrder,
   (quotesWithMetadata, sortOrder) => {
@@ -356,18 +356,17 @@ const _getSortedQuotesWithMetadata = createDeepEqualSelector(
           (quote) => quote.estimatedProcessingTimeInSeconds,
           'asc',
         );
-      case SortOrder.COST_ASC:
       default:
         return orderBy(
           quotesWithMetadata,
-          ({ cost }) => cost.valueInCurrency,
+          ({ cost }) => cost.valueInCurrency?.toNumber(),
           'asc',
         );
     }
   },
 );
 
-const _getRecommendedQuote = createDeepEqualSelector(
+const _getRecommendedQuote = createSelector(
   _getSortedQuotesWithMetadata,
   getBridgeSortOrder,
   (sortedQuotesWithMetadata, sortOrder) => {
