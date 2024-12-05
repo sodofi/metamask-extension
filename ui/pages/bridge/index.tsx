@@ -16,7 +16,10 @@ import {
   ButtonIconSize,
   IconName,
 } from '../../components/component-library';
-import { getProviderConfig } from '../../../shared/modules/selectors/networks';
+import {
+  getCurrentChainId,
+  getSelectedNetworkClientId,
+} from '../../../shared/modules/selectors/networks';
 import { getIsBridgeChain, getIsBridgeEnabled } from '../../selectors';
 import useBridging from '../../hooks/bridge/useBridging';
 import { Content, Header, Page } from '../../components/multichain/pages/page';
@@ -40,14 +43,15 @@ const CrossChainSwap = () => {
   const dispatch = useDispatch();
 
   const isBridgeEnabled = useSelector(getIsBridgeEnabled);
-  const providerConfig = useSelector(getProviderConfig);
   const isBridgeChain = useSelector(getIsBridgeChain);
+  const selectedNetworkClientId = useSelector(getSelectedNetworkClientId);
+  const chainId = useSelector(getCurrentChainId);
 
   useEffect(() => {
-    if (isBridgeChain && isBridgeEnabled && providerConfig) {
-      dispatch(setFromChain(providerConfig.chainId));
+    if (isBridgeChain && isBridgeEnabled && chainId) {
+      dispatch(setFromChain(chainId));
     }
-  }, [isBridgeChain, isBridgeEnabled, providerConfig]);
+  }, [isBridgeChain, isBridgeEnabled, chainId]);
 
   const resetControllerAndInputStates = async () => {
     await dispatch(resetBridgeState());
@@ -66,7 +70,7 @@ const CrossChainSwap = () => {
   }, []);
 
   // Needed for refreshing gas estimates
-  useGasFeeEstimates(providerConfig?.id);
+  useGasFeeEstimates(selectedNetworkClientId);
   // Needed for fetching exchange rates for tokens that have not been imported
   useBridgeExchangeRates();
   // Emits events related to quote-fetching
