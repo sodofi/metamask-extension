@@ -17,7 +17,6 @@ import {
 import {
   ALLOWED_BRIDGE_CHAIN_IDS,
   BRIDGE_PREFERRED_GAS_ESTIMATE,
-  BRIDGE_QUOTE_MAX_ETA_SECONDS,
   BRIDGE_QUOTE_MAX_RETURN_DIFFERENCE_PERCENTAGE,
 } from '../../../shared/constants/bridge';
 import {
@@ -369,39 +368,40 @@ const _getSortedQuotesWithMetadata = createSelector(
 const _getRecommendedQuote = createSelector(
   _getSortedQuotesWithMetadata,
   getBridgeSortOrder,
-  (sortedQuotesWithMetadata, sortOrder) => {
+  (sortedQuotesWithMetadata, _sortOrder) => {
+    return sortedQuotesWithMetadata[0];
     if (!sortedQuotesWithMetadata.length) {
       return undefined;
     }
 
-    const bestReturnValue = BigNumber.max(
-      sortedQuotesWithMetadata.map(
-        ({ adjustedReturn }) => adjustedReturn.valueInCurrency ?? 0,
-      ),
-    );
+    // const bestReturnValue = BigNumber.max(
+    //   sortedQuotesWithMetadata.map(
+    //     ({ adjustedReturn }) => adjustedReturn.valueInCurrency ?? 0,
+    //   ),
+    // );
 
-    const isFastestQuoteValueReasonable = (
-      adjustedReturnInCurrency: BigNumber | null,
-    ) =>
-      adjustedReturnInCurrency
-        ? adjustedReturnInCurrency
-            .div(bestReturnValue)
-            .gte(BRIDGE_QUOTE_MAX_RETURN_DIFFERENCE_PERCENTAGE)
-        : true;
+    // const isFastestQuoteValueReasonable = (
+    //   adjustedReturnInCurrency: BigNumber | null,
+    // ) =>
+    //   adjustedReturnInCurrency
+    //     ? adjustedReturnInCurrency
+    //         .div(bestReturnValue)
+    //         .gte(BRIDGE_QUOTE_MAX_RETURN_DIFFERENCE_PERCENTAGE)
+    //     : true;
 
-    const isBestPricedQuoteETAReasonable = (
-      estimatedProcessingTimeInSeconds: number,
-    ) => estimatedProcessingTimeInSeconds < BRIDGE_QUOTE_MAX_ETA_SECONDS;
+    // const isBestPricedQuoteETAReasonable = (
+    //   estimatedProcessingTimeInSeconds: number,
+    // ) => estimatedProcessingTimeInSeconds < BRIDGE_QUOTE_MAX_ETA_SECONDS;
 
-    return (
-      sortedQuotesWithMetadata.find((quote) => {
-        return sortOrder === SortOrder.ETA_ASC
-          ? isFastestQuoteValueReasonable(quote.adjustedReturn.valueInCurrency)
-          : isBestPricedQuoteETAReasonable(
-              quote.estimatedProcessingTimeInSeconds,
-            );
-      }) ?? sortedQuotesWithMetadata[0]
-    );
+    // return (
+    //   sortedQuotesWithMetadata.find((quote) => {
+    //     return sortOrder === SortOrder.ETA_ASC
+    //       ? isFastestQuoteValueReasonable(quote.adjustedReturn.valueInCurrency)
+    //       : isBestPricedQuoteETAReasonable(
+    //           quote.estimatedProcessingTimeInSeconds,
+    //         );
+    //   }) ?? sortedQuotesWithMetadata[0]
+    // );
   },
 );
 
