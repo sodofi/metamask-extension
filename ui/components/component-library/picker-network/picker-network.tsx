@@ -7,7 +7,6 @@ import {
   IconColor,
   BackgroundColor,
   Display,
-  BorderColor,
 } from '../../../helpers/constants/design-system';
 import {
   AvatarNetwork,
@@ -60,10 +59,7 @@ export const PickerNetwork: PickerNetworkComponent = React.forwardRef(
             className="mm-picker-network__avatar-network"
             src={avatarSrc}
             name={label}
-            size={AvatarNetworkSize.Sm}
-            borderRadius={BorderRadius.MD}
-            borderWidth={2}
-            borderColor={BorderColor.backgroundDefault}
+            size={AvatarNetworkSize.Xs}
             style={{
               zIndex: index + 1,
               marginLeft: index === 0 ? 0 : '-14px',
