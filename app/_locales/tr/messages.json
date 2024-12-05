@@ -416,6 +416,12 @@
   "alertMessageAddressMismatchWarning": {
     "message": "Saldırganlar bazen site adresinde küçük değişiklikler yaparak siteleri taklit edebilir. Devam etmeden önce planladığınız site ile etkileşim kurduğunuzdan emin olun."
   },
+  "alertMessageChangeInSimulationResults": {
+    "message": "Bu işlem için tahmin edilen değişiklikler güncellendi. Devam etmeden önce dikkatle inceleyin."
+  },
+  "alertMessageFirstTimeInteraction": {
+    "message": "Bu adresle ilk kez etkileşimde bulunuyorsunuz. Devam etmeden önce doğru olduğundan emin olun."
+  },
   "alertMessageGasEstimateFailed": {
     "message": "Kesin bir ücret sunamıyoruz ve bu tahmin yüksek olabilir. Özel bir gaz limiti girmenizi öneririz ancak işlemin yine de başarısız olma riski vardır."
   },
@@ -455,6 +461,12 @@
   "alertModalReviewAllAlerts": {
     "message": "Tüm uyarıları incele"
   },
+  "alertReasonChangeInSimulationResults": {
+    "message": "Sonuçlar değişti"
+  },
+  "alertReasonFirstTimeInteraction": {
+    "message": "1. etkileşim"
+  },
   "alertReasonGasEstimateFailed": {
     "message": "Ücret yanlış"
   },
@@ -482,6 +494,9 @@
   "alertReasonWrongAccount": {
     "message": "Yanlış hesap"
   },
+  "alertSelectedAccountWarning": {
+    "message": "Bu talep, cüzdanınızda seçilenden farklı bir hesap içindir. Başka bir hesap kullanmak için hesabı siteye bağlayın."
+  },
   "alerts": {
     "message": "Uyarılar"
   },
@@ -493,6 +508,10 @@
   },
   "allCustodianAccountsConnectedTitle": {
     "message": "Bağlayabilecek hesap yok"
+  },
+  "allNetworks": {
+    "message": "Tüm ağlar",
+    "description": "Speicifies to token network filter to filter by all Networks"
   },
   "allOfYour": {
     "message": "Sahip olduğunuz tüm $1",
@@ -837,17 +856,43 @@
   "bridge": {
     "message": "Köprü"
   },
+  "bridgeApproval": {
+    "message": "Köprü için $1 onayla",
+    "description": "Used in the transaction display list to describe a transaction that is an approve call on a token that is to be bridged. $1 is the symbol of a token that has been approved."
+  },
+  "bridgeCalculatingAmount": {
+    "message": "Hesaplanıyor..."
+  },
   "bridgeDontSend": {
     "message": "Köprü yap, gönderme"
+  },
+  "bridgeEnterAmount": {
+    "message": "Miktar girin"
   },
   "bridgeFrom": {
     "message": "Şuradan köprü:"
   },
+  "bridgeNetCost": {
+    "message": "Net maliyet"
+  },
   "bridgeSelectNetwork": {
     "message": "Ağ seç"
   },
+  "bridgeSelectTokenAndAmount": {
+    "message": "Token ve miktar seçin"
+  },
+  "bridgeTimingMinutes": {
+    "message": "$1 dk",
+    "description": "$1 is the ticker symbol of a an asset the user is being prompted to purchase"
+  },
+  "bridgeTimingTooltipText": {
+    "message": "Bu, köprü işleminin tamamlanacağı tahmini süredir."
+  },
   "bridgeTo": {
     "message": "Şuraya köprü:"
+  },
+  "bridgeTotalFeesTooltipText": {
+    "message": "Buna, gaz ücretleri (kripto madencilerine ödenen) ve düzenleyici ücretleri (köprü gibi güç kompleksi hizmetlerine ödenen) dahildir. Ücretler ağ trafiğine ve işlemin karmaşıklığına dayanır. MetaMask iki ücretten de kazanç sağlamaz."
   },
   "browserNotSupported": {
     "message": "Tarayıcınız desteklenmiyor..."
@@ -1160,6 +1205,14 @@
     "message": "$1 ile bağlandı",
     "description": "$1 represents account name"
   },
+  "connectedWithNetwork": {
+    "message": "$1 ağ bağlandı",
+    "description": "$1 represents network length"
+  },
+  "connectedWithNetworkName": {
+    "message": "$1 ile bağlandı",
+    "description": "$1 represents network name"
+  },
   "connecting": {
     "message": "Bağlanıyor"
   },
@@ -1303,6 +1356,10 @@
   "creatorAddress": {
     "message": "Oluşturucu adresi"
   },
+  "crossChainAggregatedBalancePopover": {
+    "message": "Bu, tüm ağlarda sahip olduğunuz tüm token'lerin değerini yansıtır. Bu değeri ETH olarak veya diğer para birimlerinde görmeyi tercih ediyorsanız şuraya gidin: $1.",
+    "description": "$1 represents the settings page"
+  },
   "crossChainSwapsLink": {
     "message": "MetaMask Portfolio ile ağlar arasında swap gerçekleştirin"
   },
@@ -1333,6 +1390,10 @@
   },
   "currentLanguage": {
     "message": "Mevcut Dil"
+  },
+  "currentNetwork": {
+    "message": "Mevcut ağ",
+    "description": "Speicifies to token network filter to filter by current Network. Will render when network nickname is not available"
   },
   "currentRpcUrlDeprecated": {
     "message": "Bu ağ için mevcut rpc url artık kullanılmıyor."
@@ -1492,6 +1553,9 @@
   },
   "dcent": {
     "message": "D'Cent"
+  },
+  "debitCreditPurchaseOptions": {
+    "message": "Banka kartı veya kredi kartı ile satın alma seçenekleri"
   },
   "decimal": {
     "message": "Token Ondalığı"
@@ -1683,6 +1747,12 @@
   "dropped": {
     "message": "Bırakıldı"
   },
+  "duplicateContactTooltip": {
+    "message": "Bu kişi adı mevcut bir hesap veya kişi ile çakışıyor"
+  },
+  "duplicateContactWarning": {
+    "message": "Yinelenen kişileriniz var"
+  },
   "edit": {
     "message": "Düzenle"
   },
@@ -1769,6 +1839,9 @@
   "editGasTooLow": {
     "message": "Bilinmeyen işlem süresi"
   },
+  "editInPortfolio": {
+    "message": "Portfolio'da düzenle"
+  },
   "editNetworkLink": {
     "message": "orijinal ağı düzenle"
   },
@@ -1801,6 +1874,9 @@
   },
   "editSpendingCapError": {
     "message": "Harcama üst limiti $1 ondalık haneyi geçemez. Devam etmek için ondalık haneleri kaldırın."
+  },
+  "editSpendingCapSpecialCharError": {
+    "message": "Sadece rakam girin"
   },
   "enableAutoDetect": {
     "message": " Otomatik algılamayı etkinleştir"
@@ -1904,9 +1980,41 @@
     "message": "Kod: $1",
     "description": "Displayed error name for debugging purposes. $1 is the error name"
   },
+  "errorPageContactSupport": {
+    "message": "Destek bölümüne ulaşın",
+    "description": "Button for contact MM support"
+  },
+  "errorPageDescribeUsWhatHappened": {
+    "message": "Ne olduğunu açıklayın",
+    "description": "Button for submitting report to sentry"
+  },
+  "errorPageInfo": {
+    "message": "Bilgileriniz gösterilemiyor. Endişelenmeyin, cüzdanınız ve paranız güvende.",
+    "description": "Information banner shown in the error page"
+  },
+  "errorPageMessageTitle": {
+    "message": "Hata mesajı",
+    "description": "Title for description, which is displayed for debugging purposes"
+  },
+  "errorPageSentryFormTitle": {
+    "message": "Ne olduğunu açıklayın",
+    "description": "In sentry feedback form, The title at the top of the feedback form."
+  },
+  "errorPageSentryMessagePlaceholder": {
+    "message": "Hatayı nasıl tekrarlayabileceğimiz gibi ayrıntıların paylaşılması sorunu çözmemize yardımcı olacaktır.",
+    "description": "In sentry feedback form, The placeholder for the feedback description input field."
+  },
+  "errorPageSentrySuccessMessageText": {
+    "message": "Teşekkürler! En kısa sürede ele alacağız.",
+    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
+  },
   "errorPageTitle": {
     "message": "MetaMask bir hata ile karşılaştı",
     "description": "Title of generic error page"
+  },
+  "errorPageTryAgain": {
+    "message": "Tekrar deneyin",
+    "description": "Button for try again"
   },
   "errorStack": {
     "message": "Yığın:",
@@ -1924,6 +2032,9 @@
   },
   "estimatedFeeTooltip": {
     "message": "Ağda işlemi gerçekleştirmek için ödenen tutar."
+  },
+  "estimatedTime": {
+    "message": "Tahmini süre"
   },
   "ethGasPriceFetchWarning": {
     "message": "Ana gaz tahmini hizmeti olarak sunulan yedek gaz fiyatı şu anda kullanılamıyor."
@@ -2069,6 +2180,9 @@
   },
   "functionType": {
     "message": "İşlev türü"
+  },
+  "fundingMethod": {
+    "message": "Para yatırma yöntemi"
   },
   "gas": {
     "message": "Gaz"
@@ -2936,6 +3050,9 @@
     "message": "Adres",
     "description": "Label above address field in name component modal."
   },
+  "nameAlreadyInUse": {
+    "message": "İsim zaten kullanılıyor"
+  },
   "nameInstructionsNew": {
     "message": "Bu adresi biliyorsanız gelecekte tanıyabilmek için ona bir takma ad verin.",
     "description": "Instruction text in name component modal when value is not recognised."
@@ -3087,6 +3204,9 @@
   },
   "networkNamePolygon": {
     "message": "Polygon"
+  },
+  "networkNameSolana": {
+    "message": "Solana"
   },
   "networkNameTestnet": {
     "message": "Test ağı"
@@ -3282,6 +3402,13 @@
   },
   "noTransactions": {
     "message": "İşleminiz yok"
+  },
+  "noTransactionsChainIdMismatch": {
+    "message": "İşlemleri görüntülemek için lütfen ağ değiştirin"
+  },
+  "noTransactionsNetworkName": {
+    "message": "İşlemleri görüntülemek için lütfen $1 ağına geçin",
+    "description": "$1 represents the network name"
   },
   "noWebcamFound": {
     "message": "Bilgisayarınızın web kamerası bulunamadı. Lütfen tekrar deneyin."
@@ -3724,6 +3851,12 @@
   "outdatedBrowserNotification": {
     "message": "Tarayıcınız güncel değil. Tarayıcınızı güncellemezseniz MetaMask'ten güvenlik yamalarını ve yeni özellikleri alamayacaksınız."
   },
+  "overrideContentSecurityPolicyHeader": {
+    "message": "İçerik-Güvenlik-Politika başlığını geçersiz kıl"
+  },
+  "overrideContentSecurityPolicyHeaderDescription": {
+    "message": "Bu seçenek, Firefox'ta merkeziyetsiz bir uygulamanın İçerik-Güvenlik-Politika başlığının uzantının düzgün bir şekilde yüklenmesini önleyebildiği bilinen bir sorunun anlık çözümüdür. Belirli web sayfası uyumluluğu için gerekli olmadığı sürece bu seçeneğin devre dışı bırakılması önerilmez."
+  },
   "padlock": {
     "message": "Asma Kilit"
   },
@@ -4038,6 +4171,24 @@
   "permissionsPageTourTitle": {
     "message": "Bağlı siteler şimdi izinler oldu"
   },
+  "permitSimulationChange_approve": {
+    "message": "Harcama üst limiti"
+  },
+  "permitSimulationChange_bidding": {
+    "message": "Teklifiniz"
+  },
+  "permitSimulationChange_listing": {
+    "message": "Listelediğiniz"
+  },
+  "permitSimulationChange_receive": {
+    "message": "Aldığınız"
+  },
+  "permitSimulationChange_revoke": {
+    "message": "Harcama üst limiti"
+  },
+  "permitSimulationChange_transfer": {
+    "message": "Gönderdiğiniz"
+  },
   "permitSimulationDetailInfo": {
     "message": "Harcama yapan tarafa hesabınızdan bu kadar çok token'i harcama izni veriyorsunuz."
   },
@@ -4241,6 +4392,15 @@
   "quoteRate": {
     "message": "Kota oranı"
   },
+  "quotedNetworkFee": {
+    "message": "$1 ağ ücreti"
+  },
+  "quotedReceiveAmount": {
+    "message": "$1 alınan miktar"
+  },
+  "quotedReceivingAmount": {
+    "message": "$1 alınıyor"
+  },
   "rank": {
     "message": "Sıralama"
   },
@@ -4395,6 +4555,9 @@
   "requestFromInfo": {
     "message": "İmzanızı isteyen site budur."
   },
+  "requestFromInfoSnap": {
+    "message": "İmzanızı isteyen Snap budur."
+  },
   "requestFromTransactionDescription": {
     "message": "Bu site tarafından onayınız isteniyor."
   },
@@ -4416,6 +4579,10 @@
   "requestingForAccount": {
     "message": "$1 için talep ediliyor",
     "description": "Name of Account"
+  },
+  "requestingForNetwork": {
+    "message": "$1 için talep ediliyor",
+    "description": "Name of Network"
   },
   "requestsAwaitingAcknowledgement": {
     "message": "onaylanmayı bekleyen talepler"
@@ -4717,6 +4884,9 @@
   "selectType": {
     "message": "Tür Seç"
   },
+  "selectedAccountMismatch": {
+    "message": "Farklı hesap seçildi"
+  },
   "selectingAllWillAllow": {
     "message": "Tümü seçimi bu sitenin mevcut tüm hesaplarınızı görüntülemesine izin verecektir. Bu siteye güvendiğinizden emin olun."
   },
@@ -4868,6 +5038,12 @@
   "signatureRequestGuidance": {
     "message": "Bumesajı sadece içeriği tam olarak anlıyorsanız ve talepte bulunan siteye güveniyorsanız imzalayın."
   },
+  "signature_decoding_bid_nft_tooltip": {
+    "message": "NFT, teklif kabul edildiğinde cüzdanınıza yansıtılacak."
+  },
+  "signature_decoding_list_nft_tooltip": {
+    "message": "Sadece birisi sizin NFT'lerinizi satın alırsa değişiklik bekleyin."
+  },
   "signed": {
     "message": "İmzalandı"
   },
@@ -4895,6 +5071,9 @@
   "simulationDetailsIncomingHeading": {
     "message": "Aldığınız"
   },
+  "simulationDetailsNoChanges": {
+    "message": "Değişiklik yok"
+  },
   "simulationDetailsOutgoingHeading": {
     "message": "Gönderdiğiniz"
   },
@@ -4917,8 +5096,14 @@
   "simulationDetailsTransactionReverted": {
     "message": "Bu işlemin başarısız olması muhtemel"
   },
+  "simulationDetailsUnavailable": {
+    "message": "Mevcut değil"
+  },
   "simulationErrorMessageV2": {
     "message": "Gaz tahmini yapamadık. Sözleşmede bir hata olabilir ve bu işlem başarısız olabilir."
+  },
+  "simulationsSettingDescription": {
+    "message": "Onaylamadan önce işlemlerdeki ve imzalardaki bakiye değişikliklerini tahmin etmek için bunu açın. Nihai sonucunu garanti etmez. $1"
   },
   "simulationsSettingSubHeader": {
     "message": "Bakiye değişikliklerini tahmin edin"
@@ -5143,6 +5328,15 @@
     "message": "Daha fazla destek için $1 oluşturucuları ile iletişime geçin.",
     "description": "This is shown when the insight snap throws an error. $1 is the snap name"
   },
+  "solanaSupportSectionTitle": {
+    "message": "Solana"
+  },
+  "solanaSupportToggleDescription": {
+    "message": "Bu özelliği açtığınızda mevcut Gizli Kurtarma İfadenizden türetilen MetaMask Uzantınıza bir Solana Hesabı ekleme seçeneğiniz olacaktır. Bu, deneysel bir Beta özelliğidir, bu yüzden riski kendinize ait olarak kullanmalısınız."
+  },
+  "solanaSupportToggleTitle": {
+    "message": "\"Yeni bir Solana hesabı ekle (Beta)\" seçeneğini etkinleştir"
+  },
   "somethingDoesntLookRight": {
     "message": "Doğru görünmeyen bir şeyler mi var? $1",
     "description": "A false positive message for users to contact support. $1 is a link to the support page."
@@ -5227,6 +5421,9 @@
   },
   "spendingCapTooltipDesc": {
     "message": "Bu, harcama yapan tarafın sizin adınıza erişim sağlayabileceği token miktarıdır."
+  },
+  "spendingCaps": {
+    "message": "Harcama üst limitleri"
   },
   "srpInputNumberOfWords": {
     "message": "$1 sözcükten oluşan bir ifadem var",
@@ -5801,6 +5998,10 @@
   "swapTokenVerifiedOn1SourceTitle": {
     "message": "Sahte token olma potansiyeli var"
   },
+  "swapTokenVerifiedSources": {
+    "message": "$1 kaynakları tarafından onaylandı. $2 üzerinde doğrulayın.",
+    "description": "$1 the number of sources that have verified the token, $2 points the user to a block explorer as a place they can verify information about the token."
+  },
   "swapTooManyDecimalsError": {
     "message": "$1, en fazla $2 ondalık basamağına izin verir",
     "description": "$1 is a token symbol and $2 is the max. number of decimals allowed for the token"
@@ -5858,6 +6059,10 @@
   "switchedNetworkToastMessage": {
     "message": "$1, $2 üzerinde aktif",
     "description": "$1 represents the account name, $2 represents the network name"
+  },
+  "switchedNetworkToastMessageNoOrigin": {
+    "message": "Şu anda $1 ağını kullanıyorsunuz",
+    "description": "$1 represents the network name"
   },
   "switchedTo": {
     "message": "Şu anda kullandığınız ağ"
@@ -5918,6 +6123,12 @@
   "tips": {
     "message": "İpuçları"
   },
+  "tipsForUsingAWallet": {
+    "message": "Cüzdan kullanma ipuçları"
+  },
+  "tipsForUsingAWalletDescription": {
+    "message": "Token eklemek web3'ü kullanmanın daha fazla yolunun kilidini açar."
+  },
   "to": {
     "message": "Kime"
   },
@@ -5970,6 +6181,9 @@
   "tokenList": {
     "message": "Token listeleri:"
   },
+  "tokenMarketplace": {
+    "message": "Token pazar yeri"
+  },
   "tokenScamSecurityRisk": {
     "message": "token dolandırıcılıkları ve güvenlik riskleri"
   },
@@ -6006,6 +6220,9 @@
   },
   "total": {
     "message": "Toplam"
+  },
+  "totalFees": {
+    "message": "Toplam ücretler"
   },
   "totalVolume": {
     "message": "Toplam hacim"

@@ -416,6 +416,12 @@
   "alertMessageAddressMismatchWarning": {
     "message": "攻撃者は、サイトのアドレスに若干の変更を加えてサイトを模倣することがあります。続行する前に、意図したサイトとやり取りしていることを確認してください。"
   },
+  "alertMessageChangeInSimulationResults": {
+    "message": "このトランザクションの推定増減額が更新されました。先に進む前によく確認してください。"
+  },
+  "alertMessageFirstTimeInteraction": {
+    "message": "このアドレスとやり取りするのは初めてです。先に進む前に、これが正しいことを確認してください。"
+  },
   "alertMessageGasEstimateFailed": {
     "message": "正確な手数料を提供できず、この見積もりは高い可能性があります。カスタムガスリミットの入力をお勧めしますが、それでもトランザクションが失敗するリスクがあります。"
   },
@@ -455,6 +461,12 @@
   "alertModalReviewAllAlerts": {
     "message": "すべてのアラートを確認する"
   },
+  "alertReasonChangeInSimulationResults": {
+    "message": "結果が変更されました"
+  },
+  "alertReasonFirstTimeInteraction": {
+    "message": "初回のやり取り"
+  },
   "alertReasonGasEstimateFailed": {
     "message": "不正確な手数料"
   },
@@ -482,6 +494,9 @@
   "alertReasonWrongAccount": {
     "message": "正しくないアカウント"
   },
+  "alertSelectedAccountWarning": {
+    "message": "このリクエストは、ウォレットで選択されているアカウントとは別のアカウントに対するものです。別のアカウントを使用するには、そのアカウントをサイトに接続してください。"
+  },
   "alerts": {
     "message": "アラート"
   },
@@ -493,6 +508,10 @@
   },
   "allCustodianAccountsConnectedTitle": {
     "message": "接続できるアカウントがありません"
+  },
+  "allNetworks": {
+    "message": "すべてのネットワーク",
+    "description": "Speicifies to token network filter to filter by all Networks"
   },
   "allOfYour": {
     "message": "すべての$1",
@@ -837,17 +856,43 @@
   "bridge": {
     "message": "ブリッジ"
   },
+  "bridgeApproval": {
+    "message": "$1のブリッジを承認",
+    "description": "Used in the transaction display list to describe a transaction that is an approve call on a token that is to be bridged. $1 is the symbol of a token that has been approved."
+  },
+  "bridgeCalculatingAmount": {
+    "message": "計算中..."
+  },
   "bridgeDontSend": {
     "message": "ブリッジを使用してください"
+  },
+  "bridgeEnterAmount": {
+    "message": "金額を入力"
   },
   "bridgeFrom": {
     "message": "ブリッジ元:"
   },
+  "bridgeNetCost": {
+    "message": "純コスト"
+  },
   "bridgeSelectNetwork": {
     "message": "ネットワークを選択"
   },
+  "bridgeSelectTokenAndAmount": {
+    "message": "トークンと金額を選択"
+  },
+  "bridgeTimingMinutes": {
+    "message": "$1分",
+    "description": "$1 is the ticker symbol of a an asset the user is being prompted to purchase"
+  },
+  "bridgeTimingTooltipText": {
+    "message": "これは、ブリッジが完了するまでの推定時間です。"
+  },
   "bridgeTo": {
     "message": "ブリッジ先:"
+  },
+  "bridgeTotalFeesTooltipText": {
+    "message": "これには、(仮想通貨マイナーに支払われる) ガス代と (ブリッジなどの複雑なサービスを供給するために支払われる) リレイヤー手数料が含まれます。\n手数料はネットワークトラフィックとトランザクションの複雑性に基づいています。MetaMaskはどちらの手数料からも利益を得ることはありません。"
   },
   "browserNotSupported": {
     "message": "ご使用のブラウザはサポートされていません..."
@@ -1160,6 +1205,14 @@
     "message": "$1と接続されました",
     "description": "$1 represents account name"
   },
+  "connectedWithNetwork": {
+    "message": "$1個のネットワークを接続済み",
+    "description": "$1 represents network length"
+  },
+  "connectedWithNetworkName": {
+    "message": "$1と接続済み",
+    "description": "$1 represents network name"
+  },
   "connecting": {
     "message": "接続中..."
   },
@@ -1303,6 +1356,10 @@
   "creatorAddress": {
     "message": "クリエイターのアドレス"
   },
+  "crossChainAggregatedBalancePopover": {
+    "message": "これにはすべてのネットワークで所有している全トークンの価値が反映されています。この値をETHまたはその他の通貨で表示する場合は、$1に移動します。",
+    "description": "$1 represents the settings page"
+  },
   "crossChainSwapsLink": {
     "message": "MetaMask Portfolioでネットワーク間でスワップ"
   },
@@ -1333,6 +1390,10 @@
   },
   "currentLanguage": {
     "message": "現在の言語"
+  },
+  "currentNetwork": {
+    "message": "現在のネットワーク",
+    "description": "Speicifies to token network filter to filter by current Network. Will render when network nickname is not available"
   },
   "currentRpcUrlDeprecated": {
     "message": "このネットワークの現在のRPC URLは非推奨となりました。"
@@ -1492,6 +1553,9 @@
   },
   "dcent": {
     "message": "D'Cent"
+  },
+  "debitCreditPurchaseOptions": {
+    "message": "デビットカードまたはクレジットカードの購入オプション"
   },
   "decimal": {
     "message": "トークンの小数桁数"
@@ -1683,6 +1747,12 @@
   "dropped": {
     "message": "削除されました"
   },
+  "duplicateContactTooltip": {
+    "message": "この連絡先名は既存のアカウントまたは連絡先と矛盾しています"
+  },
+  "duplicateContactWarning": {
+    "message": "重複する連絡先があります"
+  },
   "edit": {
     "message": "編集"
   },
@@ -1769,6 +1839,9 @@
   "editGasTooLow": {
     "message": "不明な処理時間"
   },
+  "editInPortfolio": {
+    "message": "Portfolioで編集"
+  },
   "editNetworkLink": {
     "message": "元のネットワークを編集"
   },
@@ -1801,6 +1874,9 @@
   },
   "editSpendingCapError": {
     "message": "使用限度は小数点以下$1桁を超えることができません。続けるには、小数点以下の桁を削除してください。"
+  },
+  "editSpendingCapSpecialCharError": {
+    "message": "数字のみで入力してください"
   },
   "enableAutoDetect": {
     "message": " 自動検出を有効にする"
@@ -1904,9 +1980,41 @@
     "message": "コード: $1",
     "description": "Displayed error name for debugging purposes. $1 is the error name"
   },
+  "errorPageContactSupport": {
+    "message": "サポートへのお問い合わせ",
+    "description": "Button for contact MM support"
+  },
+  "errorPageDescribeUsWhatHappened": {
+    "message": "発生した問題についてご説明ください",
+    "description": "Button for submitting report to sentry"
+  },
+  "errorPageInfo": {
+    "message": "情報は表示できませんが、ご心配なく。ウォレットと資金は安全です。",
+    "description": "Information banner shown in the error page"
+  },
+  "errorPageMessageTitle": {
+    "message": "エラーメッセージ",
+    "description": "Title for description, which is displayed for debugging purposes"
+  },
+  "errorPageSentryFormTitle": {
+    "message": "発生した問題についてご説明ください",
+    "description": "In sentry feedback form, The title at the top of the feedback form."
+  },
+  "errorPageSentryMessagePlaceholder": {
+    "message": "バグを再現する方法などの詳細をお知らせいただくと、問題の解決に役立ちます。",
+    "description": "In sentry feedback form, The placeholder for the feedback description input field."
+  },
+  "errorPageSentrySuccessMessageText": {
+    "message": "ありがとうございます。すぐに確認いたします。",
+    "description": "In sentry feedback form, The message displayed after a successful feedback submission."
+  },
   "errorPageTitle": {
     "message": "MetaMaskにエラーが発生しました",
     "description": "Title of generic error page"
+  },
+  "errorPageTryAgain": {
+    "message": "再試行",
+    "description": "Button for try again"
   },
   "errorStack": {
     "message": "スタック:",
@@ -1924,6 +2032,9 @@
   },
   "estimatedFeeTooltip": {
     "message": "ネットワーク上のトランザクションの処理に支払われる金額"
+  },
+  "estimatedTime": {
+    "message": "推定所要時間"
   },
   "ethGasPriceFetchWarning": {
     "message": "現在メインのガスの見積もりサービスが利用できないため、バックアップのガス価格が提供されています。"
@@ -2069,6 +2180,9 @@
   },
   "functionType": {
     "message": "機能の種類"
+  },
+  "fundingMethod": {
+    "message": "入金方法"
   },
   "gas": {
     "message": "ガス"
@@ -2936,6 +3050,9 @@
     "message": "アドレス",
     "description": "Label above address field in name component modal."
   },
+  "nameAlreadyInUse": {
+    "message": "名前がすでに使用されています"
+  },
   "nameInstructionsNew": {
     "message": "このアドレスを知っている場合は、今後認識できるようニックネームを付けてください。",
     "description": "Instruction text in name component modal when value is not recognised."
@@ -3087,6 +3204,9 @@
   },
   "networkNamePolygon": {
     "message": "Polygon"
+  },
+  "networkNameSolana": {
+    "message": "Solana"
   },
   "networkNameTestnet": {
     "message": "テストネット"
@@ -3282,6 +3402,13 @@
   },
   "noTransactions": {
     "message": "トランザクションがありません"
+  },
+  "noTransactionsChainIdMismatch": {
+    "message": "トランザクションを表示するにはネットワークを切り替えてください"
+  },
+  "noTransactionsNetworkName": {
+    "message": "トランザクションを表示するには$1ネットワークに切り替えてください",
+    "description": "$1 represents the network name"
   },
   "noWebcamFound": {
     "message": "お使いのコンピューターのWebカメラが見つかりませんでした。もう一度お試しください。"
@@ -3724,6 +3851,12 @@
   "outdatedBrowserNotification": {
     "message": "古いブラウザを使用しています。ブラウザをアップデートしないと、MetaMaskからセキュリティパッチや新機能を入手できなくなります。"
   },
+  "overrideContentSecurityPolicyHeader": {
+    "message": "Content-Security-Policyヘッダーを上書き"
+  },
+  "overrideContentSecurityPolicyHeaderDescription": {
+    "message": "このオプションは、DAppのContent-Security-Policyヘッダーによって拡張機能が正しく読み込まれない場合があるという、Firefoxの既知の問題に対する回避策です。特定のWebページの互換性に必要な場合を除き、このオプションを無効にすることはお勧めしません。"
+  },
   "padlock": {
     "message": "南京錠"
   },
@@ -4038,6 +4171,24 @@
   "permissionsPageTourTitle": {
     "message": "「接続済みのサイト」が「アクセス許可」に変更されました"
   },
+  "permitSimulationChange_approve": {
+    "message": "使用上限"
+  },
+  "permitSimulationChange_bidding": {
+    "message": "入札"
+  },
+  "permitSimulationChange_listing": {
+    "message": "出品"
+  },
+  "permitSimulationChange_receive": {
+    "message": "受け取る"
+  },
+  "permitSimulationChange_revoke": {
+    "message": "使用上限"
+  },
+  "permitSimulationChange_transfer": {
+    "message": "送る"
+  },
   "permitSimulationDetailInfo": {
     "message": "この数量のトークンをアカウントから転送する権限を使用者に付与しようとしています。"
   },
@@ -4241,6 +4392,15 @@
   "quoteRate": {
     "message": "クォートレート"
   },
+  "quotedNetworkFee": {
+    "message": "$1のネットワーク手数料"
+  },
+  "quotedReceiveAmount": {
+    "message": "$1の受取額"
+  },
+  "quotedReceivingAmount": {
+    "message": "$1の受取"
+  },
   "rank": {
     "message": "ランク"
   },
@@ -4395,6 +4555,9 @@
   "requestFromInfo": {
     "message": "これは署名を求めているサイトです。"
   },
+  "requestFromInfoSnap": {
+    "message": "これは署名を求めているSnapです。"
+  },
   "requestFromTransactionDescription": {
     "message": "これが承認を要求しているサイトです。"
   },
@@ -4416,6 +4579,10 @@
   "requestingForAccount": {
     "message": "$1の要求",
     "description": "Name of Account"
+  },
+  "requestingForNetwork": {
+    "message": "$1の要求",
+    "description": "Name of Network"
   },
   "requestsAwaitingAcknowledgement": {
     "message": "リクエストの承認待ち"
@@ -4717,6 +4884,9 @@
   "selectType": {
     "message": "種類を選択"
   },
+  "selectedAccountMismatch": {
+    "message": "別のアカウントが選択されました"
+  },
   "selectingAllWillAllow": {
     "message": "すべてを選択すると、このサイトに現在のすべてのアカウントが表示されます。このサイトが信頼できることを確認してください。"
   },
@@ -4868,6 +5038,12 @@
   "signatureRequestGuidance": {
     "message": "このメッセージの内容を完全に理解し、リクエスト元のサイトを信頼する場合にのみ署名してください。"
   },
+  "signature_decoding_bid_nft_tooltip": {
+    "message": "入札が受け入れられると、NFTがウォレットに反映されます。"
+  },
+  "signature_decoding_list_nft_tooltip": {
+    "message": "お手持ちのNFTが購入された場合のみ変更されます。"
+  },
   "signed": {
     "message": "署名が完了しました"
   },
@@ -4895,6 +5071,9 @@
   "simulationDetailsIncomingHeading": {
     "message": "受取額"
   },
+  "simulationDetailsNoChanges": {
+    "message": "変更なし"
+  },
   "simulationDetailsOutgoingHeading": {
     "message": "送金額"
   },
@@ -4917,8 +5096,14 @@
   "simulationDetailsTransactionReverted": {
     "message": "このトランザクションはおそらく失敗します"
   },
+  "simulationDetailsUnavailable": {
+    "message": "利用不可"
+  },
   "simulationErrorMessageV2": {
     "message": "ガス代を見積もることができませんでした。コントラクトにエラーがある可能性があり、このトランザクションは失敗するかもしれません。"
+  },
+  "simulationsSettingDescription": {
+    "message": "トランザクションと署名を確定する前に残高の増減を予測するには、この機能をオンにします。これは最終的な結果を保証するものではありません。$1"
   },
   "simulationsSettingSubHeader": {
     "message": "予測される残高の増減"
@@ -5143,6 +5328,15 @@
     "message": "今後のサポートは、$1の作成者にお問い合わせください。",
     "description": "This is shown when the insight snap throws an error. $1 is the snap name"
   },
+  "solanaSupportSectionTitle": {
+    "message": "Solana"
+  },
+  "solanaSupportToggleDescription": {
+    "message": "この機能をオンにすると、既存のシークレットリカバリーフレーズで導出したSolanaアカウントをMetaMask Extensionに追加できるようになります。これは試験運用中のベータ機能であるため、自己責任でご使用ください。"
+  },
+  "solanaSupportToggleTitle": {
+    "message": "「新規Solanaアカウントの追加 (ベータ)」を有効にする"
+  },
   "somethingDoesntLookRight": {
     "message": "何か不審な点があれば、$1",
     "description": "A false positive message for users to contact support. $1 is a link to the support page."
@@ -5227,6 +5421,9 @@
   },
   "spendingCapTooltipDesc": {
     "message": "これは、使用者が代理でアクセスできるようになるトークンの金額です。"
+  },
+  "spendingCaps": {
+    "message": "使用上限"
   },
   "srpInputNumberOfWords": {
     "message": "$1語のフレーズがあります",
@@ -5801,6 +5998,10 @@
   "swapTokenVerifiedOn1SourceTitle": {
     "message": "偽物のトークンの可能性"
   },
+  "swapTokenVerifiedSources": {
+    "message": "$1個のソースで確定済み。$2で確認。",
+    "description": "$1 the number of sources that have verified the token, $2 points the user to a block explorer as a place they can verify information about the token."
+  },
   "swapTooManyDecimalsError": {
     "message": "$1は小数点以下$2桁まで使用できます",
     "description": "$1 is a token symbol and $2 is the max. number of decimals allowed for the token"
@@ -5858,6 +6059,10 @@
   "switchedNetworkToastMessage": {
     "message": "$1が$2で有効になりました",
     "description": "$1 represents the account name, $2 represents the network name"
+  },
+  "switchedNetworkToastMessageNoOrigin": {
+    "message": "$1に切り替えました",
+    "description": "$1 represents the network name"
   },
   "switchedTo": {
     "message": "次に切り替えました:"
@@ -5918,6 +6123,12 @@
   "tips": {
     "message": "ヒント"
   },
+  "tipsForUsingAWallet": {
+    "message": "ウォレット使用のヒント"
+  },
+  "tipsForUsingAWalletDescription": {
+    "message": "トークンを追加すると、Web3の使用方法が増えます。"
+  },
   "to": {
     "message": "移動先"
   },
@@ -5970,6 +6181,9 @@
   "tokenList": {
     "message": "トークンリスト:"
   },
+  "tokenMarketplace": {
+    "message": "トークンマーケットプレイス"
+  },
   "tokenScamSecurityRisk": {
     "message": "トークン関連の詐欺やセキュリティのリスク"
   },
@@ -6006,6 +6220,9 @@
   },
   "total": {
     "message": "合計"
+  },
+  "totalFees": {
+    "message": "合計手数料"
   },
   "totalVolume": {
     "message": "合計量"
